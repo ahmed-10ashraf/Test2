@@ -292,12 +292,46 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 100), // Space for bottom nav
+                const SizedBox(height: 15), // Space for bottom nav
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: const [
+                        Icon(Icons.stars, color: Colors.orangeAccent),
+                        SizedBox(width: 8),
+                        Text(
+                          'Maintaince Car',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const Text(
+                      'See all',
+                      style: TextStyle(color: Color(0xFF1A73E8), fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                // Featured Cars List
+                SizedBox(
+                  height: 240,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      _buildCarCard('Toyota Camry', '2022 · 25,000 km · Auto', 'EGP 850,000', Icons.directions_car),
+                      const SizedBox(width: 15),
+                      _buildCarCard('Kia Sportage', '2023 · 10,000 km · Auto', 'EGP 1,200,000', Icons.airport_shuttle),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 25),
               ],
             ),
           ),
         ),
       ),
+
       bottomNavigationBar: Stack(
         alignment: Alignment.bottomCenter,
         children: [
