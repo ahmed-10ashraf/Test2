@@ -41,7 +41,7 @@ class _SplashPageState extends State<SplashPage> {
                 width: 200,
                 height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -53,7 +53,7 @@ class _SplashPageState extends State<SplashPage> {
                 width: 150,
                 height: 150,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -65,7 +65,7 @@ class _SplashPageState extends State<SplashPage> {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -104,7 +104,7 @@ class _SplashPageState extends State<SplashPage> {
                           child: Icon(
                             Icons.wifi,
                             size: 20,
-                            color: const Color(0xFF1A73E8).withOpacity(0.8),
+                            color: const Color(0xFF1A73E8).withValues(alpha: 0.8),
                           ),
                         ),
                       ],
