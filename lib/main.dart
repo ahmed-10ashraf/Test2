@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test2/pages/splash_page.dart';
+import 'package:test2/screens/home_page/home_page.dart';
+import 'package:test2/screens/profile/profile_screen.dart';
+import 'screens/splash_screen/splash_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,11 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Car Link',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
-      home: const SplashPage(),
+      home: HomePage(),
     );
   }
 }

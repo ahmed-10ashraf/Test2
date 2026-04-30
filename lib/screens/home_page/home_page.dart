@@ -32,6 +32,12 @@ class _HomePageState extends State<HomePage> {
       'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=800',
       'cta': 'List Now'
     },
+    {
+      'title': 'Sell Your Car Fast',
+      'subtitle': 'Get the best market price',
+      'image': 'assets/images/hyundai_tucson_summer_ad_v2.png',
+      'cta': 'List Now'
+    },
   ];
 
   @override
