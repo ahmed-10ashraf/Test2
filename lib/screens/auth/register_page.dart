@@ -13,13 +13,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -28,18 +31,18 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Create Account',
+            Text(
+              isAr ? 'إنشاء حساب' : 'Create Account',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: isDark ? Colors.white : Colors.black,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Join thousands of car buyers & sellers in Egypt',
-              style: TextStyle(
+            Text(
+              isAr ? 'انضم لآلاف البائعين والمشترين في مصر' : 'Join thousands of car buyers & sellers in Egypt',
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
               ),
@@ -52,11 +55,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () {},
-                    icon: const Icon(Icons.g_mobiledata, color: Colors.black, size: 30),
-                    label: const Text('Google', style: TextStyle(color: Colors.black)),
+                    icon: Icon(Icons.g_mobiledata, color: isDark ? Colors.white : Colors.black, size: 30),
+                    label: Text(
+                      isAr ? 'جوجل' : 'Google',
+                      style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                    ),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: BorderSide(color: Colors.grey.shade200),
+                      side: BorderSide(color: isDark ? Colors.grey.shade800 : Colors.grey.shade200),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                   ),
@@ -66,10 +72,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: OutlinedButton.icon(
                     onPressed: () {},
                     icon: const Icon(Icons.facebook, color: Colors.blue),
-                    label: const Text('Facebook', style: TextStyle(color: Colors.black)),
+                    label: Text(
+                      isAr ? 'فيسبوك' : 'Facebook',
+                      style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                    ),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: BorderSide(color: Colors.grey.shade200),
+                      side: BorderSide(color: isDark ? Colors.grey.shade800 : Colors.grey.shade200),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                   ),
@@ -80,59 +89,84 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(height: 24),
             Row(
               children: [
-                Expanded(child: Divider(color: Colors.grey.shade200)),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('or fill in details', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                Expanded(child: Divider(color: isDark ? Colors.grey.shade800 : Colors.grey.shade200)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    isAr ? 'أو أدخل التفاصيل' : 'or fill in details',
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
                 ),
-                Expanded(child: Divider(color: Colors.grey.shade200)),
+                Expanded(child: Divider(color: isDark ? Colors.grey.shade800 : Colors.grey.shade200)),
               ],
             ),
             const SizedBox(height: 24),
 
             // Full Name
-            _buildLabel('Full Name'),
-            _buildTextField(hint: 'Ahmed Mohamed', icon: Icons.person_outline),
+            _buildLabel(isAr ? 'الاسم بالكامل' : 'Full Name', isDark),
+            _buildTextField(
+                hint: isAr ? 'أحمد محمد' : 'Ahmed Mohamed',
+                icon: Icons.person_outline,
+                isDark: isDark),
             
             const SizedBox(height: 16),
             
             // Phone Number
-            _buildLabel('Phone Number'),
-            _buildTextField(hint: '+20 1X XXX XXXX', icon: Icons.phone_android_outlined),
+            _buildLabel(isAr ? 'رقم الهاتف' : 'Phone Number', isDark),
+            _buildTextField(
+                hint: '+20 1X XXX XXXX',
+                icon: Icons.phone_android_outlined,
+                isDark: isDark),
 
             const SizedBox(height: 16),
 
             // Email
-            _buildLabel('Email'),
-            _buildTextField(hint: 'email@example.com', icon: Icons.email_outlined),
+            _buildLabel(isAr ? 'البريد الإلكتروني' : 'Email', isDark),
+            _buildTextField(
+                hint: 'email@example.com',
+                icon: Icons.email_outlined,
+                isDark: isDark),
 
             const SizedBox(height: 16),
 
             // Password
-            _buildLabel('Password'),
-            _buildTextField(hint: 'Min. 8 characters', icon: Icons.lock_outline, isPassword: true),
+            _buildLabel(isAr ? 'كلمة المرور' : 'Password', isDark),
+            _buildTextField(
+                hint: isAr ? '8 أحرف على الأقل' : 'Min. 8 characters',
+                icon: Icons.lock_outline,
+                isPassword: true,
+                isDark: isDark),
 
             const SizedBox(height: 16),
 
             // City
-            _buildLabel('City'),
+            _buildLabel(isAr ? 'المدينة' : 'City', isDark),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
+                color: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade50,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   value: _selectedCity,
-                  hint: const Text('Select your city', style: TextStyle(color: Colors.grey)),
+                  dropdownColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+                  hint: Text(
+                    isAr ? 'اختر مدينتك' : 'Select your city',
+                    style: const TextStyle(color: Colors.grey),
+                  ),
                   isExpanded: true,
                   icon: const Icon(Icons.keyboard_arrow_down),
-                  items: ['Cairo', 'Alexandria', 'Giza', 'Shubra el-Kheima']
+                  items: (isAr 
+                      ? ['القاهرة', 'الإسكندرية', 'الجيزة', 'شبرا الخيمة']
+                      : ['Cairo', 'Alexandria', 'Giza', 'Shubra el-Kheima'])
                       .map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(
+                        value,
+                        style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                      ),
                     );
                   }).toList(),
                   onChanged: (newValue) {
@@ -157,21 +191,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     });
                   },
                   activeColor: Colors.blue,
+                  side: BorderSide(color: isDark ? Colors.grey.shade700 : Colors.grey.shade400),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                 ),
                 Expanded(
                   child: RichText(
                     text: TextSpan(
-                      text: 'I agree to the ',
+                      text: isAr ? 'أوافق على ' : 'I agree to the ',
                       style: const TextStyle(color: Colors.grey, fontSize: 12),
                       children: [
                         TextSpan(
-                          text: 'Terms of Service',
+                          text: isAr ? 'شروط الخدمة' : 'Terms of Service',
                           style: TextStyle(color: Colors.blue.shade700, fontWeight: FontWeight.bold),
                         ),
-                        const TextSpan(text: ' and '),
+                        TextSpan(text: isAr ? ' و ' : ' and '),
                         TextSpan(
-                          text: 'Privacy Policy',
+                          text: isAr ? 'سياسة الخصوصية' : 'Privacy Policy',
                           style: TextStyle(color: Colors.blue.shade700, fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -193,13 +228,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2979FF),
+                  backgroundColor: const Color(0xFF1A73E8),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   elevation: 0,
                 ),
-                child: const Text(
-                  'Create Account',
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                child: Text(
+                  isAr ? 'إنشاء حساب' : 'Create Account',
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -210,14 +245,17 @@ class _RegisterPageState extends State<RegisterPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Already have an account? ', style: TextStyle(color: Colors.grey)),
+                Text(
+                  isAr ? 'لديك حساب بالفعل؟ ' : 'Already have an account? ',
+                  style: const TextStyle(color: Colors.grey),
+                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.pop(context); // Goes back to Login
                   },
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                  child: Text(
+                    isAr ? 'تسجيل دخول' : 'Login',
+                    style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -229,25 +267,34 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _buildLabel(String label) {
+  Widget _buildLabel(String label, bool isDark) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         label,
-        style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black87),
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white70 : Colors.black87,
+        ),
       ),
     );
   }
 
-  Widget _buildTextField({required String hint, required IconData icon, bool isPassword = false}) {
+  Widget _buildTextField({
+    required String hint,
+    required IconData icon,
+    bool isPassword = false,
+    required bool isDark,
+  }) {
     return TextField(
       obscureText: isPassword,
+      style: TextStyle(color: isDark ? Colors.white : Colors.black),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-        prefixIcon: Icon(icon, color: Colors.indigo.shade200, size: 20),
+        prefixIcon: Icon(icon, color: const Color(0xFF1A73E8).withOpacity(0.4), size: 20),
         filled: true,
-        fillColor: Colors.grey.shade50,
+        fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade50,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,

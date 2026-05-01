@@ -26,6 +26,8 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -36,7 +38,8 @@ class _SplashPageState extends State<SplashPage> {
             // Subtle circular decorations
             Positioned(
               top: -50,
-              left: -50,
+              left: isAr ? null : -50,
+              right: isAr ? -50 : null,
               child: Container(
                 width: 200,
                 height: 200,
@@ -48,7 +51,8 @@ class _SplashPageState extends State<SplashPage> {
             ),
             Positioned(
               bottom: 100,
-              right: -30,
+              right: isAr ? null : -30,
+              left: isAr ? -30 : null,
               child: Container(
                 width: 150,
                 height: 150,
@@ -60,7 +64,8 @@ class _SplashPageState extends State<SplashPage> {
             ),
             Positioned(
               bottom: -20,
-              left: 20,
+              left: isAr ? null : 20,
+              right: isAr ? 20 : null,
               child: Container(
                 width: 100,
                 height: 100,
@@ -122,9 +127,9 @@ class _SplashPageState extends State<SplashPage> {
                   ),
                   const SizedBox(height: 8),
                   // Subtitle
-                  const Text(
-                    'Drive smarter, stay connected',
-                    style: TextStyle(
+                  Text(
+                    isAr ? 'قُد بذكاء، ابقَ على اتصال' : 'Drive smarter, stay connected',
+                    style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 16,
                       letterSpacing: 0.5,
@@ -135,14 +140,14 @@ class _SplashPageState extends State<SplashPage> {
             ),
             
             // Version at bottom
-            const Positioned(
+            Positioned(
               bottom: 40,
               left: 0,
               right: 0,
               child: Center(
                 child: Text(
-                  'v 1.0.0',
-                  style: TextStyle(
+                  isAr ? 'الإصدار 1.0.0' : 'v 1.0.0',
+                  style: const TextStyle(
                     color: Colors.white54,
                     fontSize: 14,
                   ),

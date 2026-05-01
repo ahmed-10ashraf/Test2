@@ -7,8 +7,11 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -22,7 +25,7 @@ class LoginPage extends StatelessWidget {
                   end: Alignment.bottomRight,
                   colors: [
                     Color(0xFF1A73E8),
-                    Color(0xFF00C6FF),
+                    Color(0xFF00D2A0),
                   ],
                 ),
                 borderRadius: BorderRadius.only(
@@ -41,9 +44,9 @@ class LoginPage extends StatelessWidget {
                       letterSpacing: 2,
                     ),
                   ),
-                  const Text(
-                    'Your Smart Connection to Every Car Need',
-                    style: TextStyle(
+                  Text(
+                    isAr ? 'اتصالك الذكي لكل احتياجات السيارات' : 'Your Smart Connection to Every Car Need',
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white70,
                     ),
@@ -69,17 +72,17 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Welcome back',
+                  Text(
+                    isAr ? 'مرحباً بعودتك' : 'Welcome back',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: isDark ? Colors.white : Colors.black87,
                     ),
                   ),
-                  const Text(
-                    'Sign in to continue',
-                    style: TextStyle(
+                  Text(
+                    isAr ? 'سجل دخولك للمتابعة' : 'Sign in to continue',
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
                     ),
@@ -92,11 +95,14 @@ class LoginPage extends StatelessWidget {
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: () {},
-                          icon: const Icon(Icons.g_mobiledata, color: Colors.black),
-                          label: const Text('Google', style: TextStyle(color: Colors.black)),
+                          icon: Icon(Icons.g_mobiledata, color: isDark ? Colors.white : Colors.black),
+                          label: Text(
+                            isAr ? 'جوجل' : 'Google',
+                            style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                          ),
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            side: BorderSide(color: Colors.grey.shade300),
+                            side: BorderSide(color: isDark ? Colors.grey.shade800 : Colors.grey.shade300),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
                         ),
@@ -106,10 +112,13 @@ class LoginPage extends StatelessWidget {
                         child: OutlinedButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.facebook, color: Colors.blue),
-                          label: const Text('Facebook', style: TextStyle(color: Colors.black)),
+                          label: Text(
+                            isAr ? 'فيسبوك' : 'Facebook',
+                            style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                          ),
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            side: BorderSide(color: Colors.grey.shade300),
+                            side: BorderSide(color: isDark ? Colors.grey.shade800 : Colors.grey.shade300),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
                         ),
@@ -120,25 +129,33 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Row(
                     children: [
-                      Expanded(child: Divider(color: Colors.grey.shade300)),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Text('or continue with email', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                      Expanded(child: Divider(color: isDark ? Colors.grey.shade800 : Colors.grey.shade300)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          isAr ? 'أو تابع بالبريد الإلكتروني' : 'or continue with email',
+                          style: const TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
                       ),
-                      Expanded(child: Divider(color: Colors.grey.shade300)),
+                      Expanded(child: Divider(color: isDark ? Colors.grey.shade800 : Colors.grey.shade300)),
                     ],
                   ),
                   const SizedBox(height: 24),
 
                   // Email Field
-                  const Text('Email or Phone', style: TextStyle(fontWeight: FontWeight.w500)),
+                  Text(
+                    isAr ? 'البريد أو الهاتف' : 'Email or Phone',
+                    style: TextStyle(fontWeight: FontWeight.w500, color: isDark ? Colors.white : Colors.black87),
+                  ),
                   const SizedBox(height: 8),
                   TextField(
+                    style: TextStyle(color: isDark ? Colors.white : Colors.black),
                     decoration: InputDecoration(
                       hintText: 'you@example.com',
+                      hintStyle: const TextStyle(color: Colors.grey),
                       prefixIcon: const Icon(Icons.email_outlined),
                       filled: true,
-                      fillColor: Colors.grey.shade50,
+                      fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade50,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
@@ -149,15 +166,20 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   // Password Field
-                  const Text('Password', style: TextStyle(fontWeight: FontWeight.w500)),
+                  Text(
+                    isAr ? 'كلمة المرور' : 'Password',
+                    style: TextStyle(fontWeight: FontWeight.w500, color: isDark ? Colors.white : Colors.black87),
+                  ),
                   const SizedBox(height: 8),
                   TextField(
                     obscureText: true,
+                    style: TextStyle(color: isDark ? Colors.white : Colors.black),
                     decoration: InputDecoration(
                       hintText: '********',
+                      hintStyle: const TextStyle(color: Colors.grey),
                       prefixIcon: const Icon(Icons.lock_outline),
                       filled: true,
-                      fillColor: Colors.grey.shade50,
+                      fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade50,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
@@ -166,10 +188,13 @@ class LoginPage extends StatelessWidget {
                   ),
 
                   Align(
-                    alignment: Alignment.centerRight,
+                    alignment: isAr ? Alignment.centerLeft : Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {},
-                      child: const Text('Forgot password?', style: TextStyle(color: Colors.blue)),
+                      child: Text(
+                        isAr ? 'نسيت كلمة المرور؟' : 'Forgot password?',
+                        style: const TextStyle(color: Colors.blue),
+                      ),
                     ),
                   ),
 
@@ -190,7 +215,10 @@ class LoginPage extends StatelessWidget {
                         backgroundColor: const Color(0xFF1A73E8),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                       ),
-                      child: const Text('Sign In', style: TextStyle(color: Colors.white, fontSize: 16)),
+                      child: Text(
+                        isAr ? 'تسجيل الدخول' : 'Sign In',
+                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                      ),
                     ),
                   ),
 
@@ -200,7 +228,10 @@ class LoginPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('No account? '),
+                      Text(
+                        isAr ? 'ليس لديك حساب؟ ' : 'No account? ',
+                        style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
+                      ),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -208,9 +239,9 @@ class LoginPage extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => const RegisterPage()),
                           );
                         },
-                        child: const Text(
-                          'Register',
-                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                        child: Text(
+                          isAr ? 'سجل الآن' : 'Register',
+                          style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -219,7 +250,10 @@ class LoginPage extends StatelessWidget {
                   Center(
                     child: TextButton(
                       onPressed: () {},
-                      child: const Text('Browse as Guest →', style: TextStyle(color: Colors.blue)),
+                      child: Text(
+                        isAr ? 'تصفح كضيف ←' : 'Browse as Guest →',
+                        style: const TextStyle(color: Colors.blue),
+                      ),
                     ),
                   ),
                 ],

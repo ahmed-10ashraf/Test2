@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:io';
+import 'package:test2/main.dart';
+import 'package:test2/data/dummy_data.dart';
+import 'package:test2/models/car_ad.dart';
+import '../profile/profile_screen.dart';
+import '../profile/my_ads_screen.dart';
+import '../profile/favorites_screen.dart';
+import '../notifications/notifications_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,42 +17,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
   final PageController _pageController = PageController();
   int _currentPage = 0;
   Timer? _timer;
 
-  final List<Map<String, String>> _bannerData = [
-    {
-      'title': 'Summer Offer from Hyundai',
-      'subtitle': 'The strongest summer offers in Egypt',
-      'image': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800',
-      'cta': 'Learn More'
-    },
-    {
-      'title': 'Find Your Dream Car',
-      'subtitle': 'Up to 30% Off Listings',
-      'image': 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800',
-      'cta': 'Browse Deals'
-    },
-    {
-      'title': 'Sell Your Car Fast',
-      'subtitle': 'Get the best market price',
-      'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=800',
-      'cta': 'List Now'
-    },
-    {
-      'title': 'Sell Your Car Fast',
-      'subtitle': 'Get the best market price',
-      'image': 'assets/images/hyundai_tucson_summer_ad_v2.png',
-      'cta': 'List Now'
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
+    _startBannerTimer();
+  }
+
+  void _startBannerTimer() {
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
-      if (_currentPage < _bannerData.length - 1) {
+      final bannersCount = bannersEn.length;
+      if (_currentPage < bannersCount - 1) {
         _currentPage++;
       } else {
         _currentPage = 0;
@@ -69,406 +56,110 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFF),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 10),
-                _buildTopBar(),
-                const SizedBox(height: 20),
-                _buildSearchBar(),
-                const SizedBox(height: 25),
-                _buildBannerCarousel(),
-                const SizedBox(height: 25),
-                
-                // Top Brands Section
-                _buildTopBrandsSection(),
-                
-                const SizedBox(height: 25),
-                // Categories (SUV, Sedan, etc.)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildCategoryItem('Sedans', 'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&q=80&w=200', const Color(0xFFE3F2FD)),
-                    _buildCategoryItem('SUVs', 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80&w=200', const Color(0xFFE0F2F1)),
-                    _buildCategoryItem('Hatchback', 'https://images.unsplash.com/photo-1590362891175-3794ef169f2a?auto=format&fit=crop&q=80&w=200', const Color(0xFFFFF3E0)),
-                    _buildCategoryItem('Sports', 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=200', const Color(0xFFF3E5F5)),
-                  ],
-                ),
-
-                const SizedBox(height: 25),
-                // Featured Cars Header
-                _buildSectionHeader('Featured Cars', Icons.stars, Colors.orangeAccent),
-                const SizedBox(height: 15),
-                // Featured Cars List
-                SizedBox(
-                  height: 260,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      _buildCarCard(
-                        'Audi A6 Sedan', 
-                        '2023 · 0 km · Auto', 
-                        'EGP 3,850,000', 
-                        'https://images.unsplash.com/photo-1541348263662-e0c8de4259ba?auto=format&fit=crop&q=80&w=400',
-                        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Audi-Logo_2016.svg/1024px-Audi-Logo_2016.svg.png'
-                      ),
-                      const SizedBox(width: 15),
-                      _buildCarCard(
-                        'Porsche 911 GT3', 
-                        '2024 · 0 km · PDK', 
-                        'EGP 12,500,000', 
-                        'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=400',
-                        'https://upload.wikimedia.org/wikipedia/en/thumb/d/d9/Porsche_logo.svg/800px-Porsche_logo.svg.png'
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-                _buildSectionHeader('Showrooms', Icons.business, Colors.blueGrey),
-                const SizedBox(height: 15),
-                Row(
-                  children: [
-                    _buildShowroomPlaceholder(),
-                    const SizedBox(width: 15),
-                    _buildShowroomPlaceholder(),
-                  ],
-                ),
-                const SizedBox(height: 100),
-              ],
-            ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: _buildBottomNavBar(),
-    );
-  }
-
-  Widget _buildTopBrandsSection() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Top Brands',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Row(
-              children: [
-                const Text(
-                  'View All',
-                  style: TextStyle(color: Colors.orange, fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(width: 4),
-                Icon(Icons.arrow_forward_ios, size: 12, color: Colors.orange.shade700),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildBrandItem('Mercedes', 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Benz_Logo_2010.svg/1024px-Mercedes-Benz_Logo_2010.svg.png'),
-            _buildBrandItem('BMW', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png'),
-            _buildBrandItem('Audi', 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Audi-Logo_2016.svg/1024px-Audi-Logo_2016.svg.png'),
-            _buildBrandItem('Porsche', 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d9/Porsche_logo.svg/800px-Porsche_logo.svg.png'),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBrandItem(String name, String logoUrl) {
-    return Column(
-      children: [
-        Container(
-          height: 75,
-          width: 75,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.shade200),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.02),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              )
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    return ValueListenableBuilder<Locale>(
+      valueListenable: localeNotifier,
+      builder: (context, locale, _) {
+        final isAr = locale.languageCode == 'ar';
+        
+        return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          body: IndexedStack(
+            index: _selectedIndex,
+            children: [
+              _buildHomeContent(isDark, isAr),
+              Center(child: Text(isAr ? 'شاشة البوت' : 'Chatbot Screen')),
+              _buildHomeContent(isDark, isAr),
+              Center(child: Text(isAr ? 'الخدمات' : 'Services Screen')),
+              const ProfileScreen(),
             ],
           ),
-          child: Image.network(
-            logoUrl,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => const Icon(Icons.directions_car, color: Colors.grey),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          name,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black87),
-        ),
-      ],
+          bottomNavigationBar: _buildBottomNavBar(isDark, isAr),
+        );
+      },
     );
   }
 
-  Widget _buildBannerCarousel() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 200,
-          width: double.infinity,
-          child: PageView.builder(
-            controller: _pageController,
-            onPageChanged: (int page) {
-              setState(() {
-                _currentPage = page;
-              });
-            },
-            itemCount: _bannerData.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
-                  child: Stack(
-                    children: [
-                      Image.network(
-                        _bannerData[index]['image']!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 200,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Colors.black.withOpacity(0.7),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              _bannerData[index]['title']!.toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              _bannerData[index]['subtitle']!,
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF1A73E8),
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: Text(
-                                '${_bannerData[index]['cta']} →',
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            _bannerData.length,
-            (index) => Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              width: _currentPage == index ? 20 : 8,
-              height: 8,
-              decoration: BoxDecoration(
-                color: _currentPage == index ? const Color(0xFF1A73E8) : Colors.grey.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTopBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              text: const TextSpan(
+  Widget _buildHomeContent(bool isDark, bool isAr) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              _buildTopBar(isDark, isAr),
+              const SizedBox(height: 20),
+              _buildSearchBar(isDark, isAr),
+              const SizedBox(height: 25),
+              _buildBannerCarousel(isAr),
+              const SizedBox(height: 25),
+              _buildTopBrandsSection(isDark, isAr),
+              const SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextSpan(
-                    text: 'CAR ',
-                    style: TextStyle(
-                      color: Color(0xFF1A73E8),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'LINK',
-                    style: TextStyle(
-                      color: Color(0xFF00D2A0),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  _buildCategoryItem(isAr ? 'سيدان' : 'Sedans', 'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&q=80&w=200', isDark ? Colors.blue.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
+                  _buildCategoryItem(isAr ? 'دفع رباعي' : 'SUVs', 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80&w=200', isDark ? Colors.teal.withValues(alpha: 0.1) : const Color(0xFFE0F2F1), isDark),
+                  _buildCategoryItem(isAr ? 'هاتشباك' : 'Hatchback', 'https://images.unsplash.com/photo-1590362891175-3794ef169f2a?auto=format&fit=crop&q=80&w=200', isDark ? Colors.orange.withValues(alpha: 0.1) : const Color(0xFFFFF3E0), isDark),
+                  _buildCategoryItem(isAr ? 'رياضية' : 'Sports', 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=200', isDark ? Colors.purple.withValues(alpha: 0.1) : const Color(0xFFF3E5F5), isDark),
                 ],
               ),
-            ),
-            Row(
-              children: const [
-                Icon(Icons.location_on, size: 14, color: Colors.redAccent),
-                SizedBox(width: 4),
-                Text(
-                  'Cairo, Egypt',
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
+              const SizedBox(height: 25),
+              _buildSectionHeader(isAr ? 'سيارات مميزة' : 'Featured Cars', Icons.stars, Colors.orangeAccent, isDark, isAr),
+              const SizedBox(height: 15),
+              SizedBox(
+                height: 280,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: featuredCars.length,
+                  itemBuilder: (context, index) {
+                    final car = featuredCars[index];
+                    return Padding(
+                      padding: EdgeInsetsDirectional.only(end: 15),
+                      child: _buildCarCard(
+                        isAr ? car.titleAr : car.titleEn,
+                        isAr ? car.detailsAr : car.detailsEn,
+                        isAr ? car.priceAr : car.priceEn,
+                        car.imagePath,
+                        car.brandLogo,
+                        isDark,
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            _buildIconButton(Icons.notifications_none, Colors.orangeAccent, hasDot: true),
-            const SizedBox(width: 12),
-            _buildIconButton(Icons.favorite, Colors.pinkAccent),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildIconButton(IconData icon, Color iconColor, {bool hasDot = false}) {
-    return Stack(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
-          ),
-          child: Icon(icon, color: iconColor),
-        ),
-        if (hasDot)
-          Positioned(
-            right: 2,
-            top: 2,
-            child: Container(
-              height: 8,
-              width: 8,
-              decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
-            ),
-          )
-      ],
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            height: 55,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10)],
-            ),
-            child: Row(
-              children: const [
-                Icon(Icons.search, color: Color(0xFF1A73E8)),
-                SizedBox(width: 10),
-                Text('Search cars, brands, models...', style: TextStyle(color: Colors.grey)),
-              ],
-            ),
+              ),
+              const SizedBox(height: 25),
+              _buildSectionHeader(isAr ? 'المعارض' : 'Showrooms', Icons.business, Colors.blueGrey, isDark, isAr),
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  _buildShowroomPlaceholder(isDark, isAr),
+                  const SizedBox(width: 15),
+                  _buildShowroomPlaceholder(isDark, isAr),
+                ],
+              ),
+              const SizedBox(height: 100),
+            ],
           ),
         ),
-        const SizedBox(width: 12),
-        const Text('Filter', style: TextStyle(color: Color(0xFF1A73E8), fontWeight: FontWeight.bold)),
-        const SizedBox(width: 4),
-        const Icon(Icons.settings_input_component, size: 18, color: Color(0xFF1A73E8)),
-      ],
-    );
-  }
-
-  Widget _buildSectionHeader(String title, IconData icon, Color iconColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Icon(icon, color: iconColor),
-            const SizedBox(width: 8),
-            Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ],
-        ),
-        const Text('See all', style: TextStyle(color: Color(0xFF1A73E8), fontWeight: FontWeight.w600)),
-      ],
-    );
-  }
-
-  Widget _buildShowroomPlaceholder() {
-    return Container(
-      width: 100,
-      height: 80,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)],
       ),
-      child: const Icon(Icons.apartment, size: 40, color: Colors.blueGrey),
     );
   }
 
-  Widget _buildBottomNavBar() {
+  Widget _buildBottomNavBar(bool isDark, bool isAr) {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
         Container(
           height: 70,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, -5),
               ),
@@ -477,109 +168,473 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(Icons.home, 'Home', true),
-              _buildNavItem(Icons.chat_bubble_outline, 'Chatbot', false),
+              _buildNavItem(Icons.home, isAr ? 'الرئيسية' : 'Home', 0),
+              _buildNavItem(Icons.chat_bubble_outline, isAr ? 'البوت' : 'Chatbot', 1),
               const SizedBox(width: 40),
-              _buildNavItem(Icons.menu, 'Services', false),
-              _buildNavItem(Icons.person_outline, 'Profile', false),
+              _buildNavItem(Icons.menu, isAr ? 'الخدمات' : 'Services', 3),
+              _buildNavItem(Icons.person_outline, isAr ? 'حسابي' : 'Profile', 4),
             ],
           ),
         ),
         Positioned(
           bottom: 20,
-          child: Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: const Color(0xFF1A73E8),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF1A73E8).withOpacity(0.3),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
-                ),
-              ],
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedIndex = 2;
+              });
+            },
+            child: Container(
+              height: 60,
+              width: 60,
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A73E8),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF1A73E8).withOpacity(0.3),
+                    blurRadius: 15,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: const Icon(Icons.add, color: Colors.white, size: 30),
             ),
-            child: const Icon(Icons.add, color: Colors.white, size: 30),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildCategoryItem(String title, String imageUrl, Color bgColor) {
+  Widget _buildNavItem(IconData icon, String label, int index) {
+    bool isSelected = _selectedIndex == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedIndex = index;
+        });
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: isSelected ? const Color(0xFF1A73E8) : Colors.grey),
+          Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? const Color(0xFF1A73E8) : Colors.grey,
+              fontSize: 12,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopBar(bool isDark, bool isAr) {
+    return Directionality(
+      textDirection: TextDirection.ltr, // لضمان أن الصورة دائماً على اليسار والقلب على اليمين
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // صورة البروفايل في أقصى اليسار
+          ValueListenableBuilder<String?>(
+            valueListenable: userProfileImageNotifier,
+            builder: (context, imagePath, _) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedIndex = 4; // ينتقل لتبويب الحساب
+                  });
+                },
+                child: Container(
+                  width: 45,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: const Color(0xFF1A73E8), width: 1.5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(22.5),
+                    child: imagePath != null
+                        ? Image.file(File(imagePath), fit: BoxFit.cover)
+                        : Container(
+                            color: isDark ? Colors.white10 : Colors.grey.shade200,
+                            child: Icon(Icons.person, color: isDark ? Colors.white54 : Colors.grey, size: 25),
+                          ),
+                  ),
+                ),
+              );
+            },
+          ),
+          
+          // أيقونات الإشعارات والمفضلة في اليمين
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const FavoritesScreen()),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05), blurRadius: 5),
+                    ],
+                  ),
+                  child: const Icon(Icons.favorite, color: Colors.red, size: 22),
+                ),
+              ),
+              const SizedBox(width: 12),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NotificationsScreen()),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05), blurRadius: 5),
+                    ],
+                  ),
+                  child: Icon(Icons.notifications_outlined, color: isDark ? Colors.white70 : Colors.black87),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar(bool isDark, bool isAr) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(isDark ? 0.2 : 0.03), blurRadius: 10, offset: const Offset(0, 4)),
+        ],
+      ),
+      child: TextField(
+        textAlign: isAr ? TextAlign.right : TextAlign.left,
+        style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+        decoration: InputDecoration(
+          icon: isAr ? null : const Icon(Icons.search, color: Colors.grey),
+          suffixIcon: isAr ? const Icon(Icons.search, color: Colors.grey) : null,
+          hintText: isAr ? 'ابحث عن الماركات، الموديلات...' : 'Search for brands, models...',
+          hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBannerCarousel(bool isAr) {
+    final banners = isAr ? bannersAr : bannersEn;
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 210,
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: banners.length,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPage = index;
+              });
+            },
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  color: Colors.black,
+                  image: DecorationImage(
+                    image: banners[index]['image']!.startsWith('assets/')
+                        ? AssetImage(banners[index]['image']!) as ImageProvider
+                        : NetworkImage(banners[index]['image']!),
+                    fit: BoxFit.cover,
+                    alignment: isAr ? Alignment.centerLeft : Alignment.centerRight,
+                  ),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    gradient: LinearGradient(
+                      begin: isAr ? Alignment.centerRight : Alignment.centerLeft,
+                      end: isAr ? Alignment.centerLeft : Alignment.centerRight,
+                      stops: const [0.0, 0.5],
+                      colors: [
+                        Colors.black.withOpacity(0.85),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(25),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              banners[index]['title']!,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              banners[index]['subtitle']!,
+                              style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
+                            ),
+                            const SizedBox(height: 18),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF00D2A0),
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              ),
+                              child: Text(banners[index]['cta']!, style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Spacer(flex: 6),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(banners.length, (index) => _buildPageIndicator(index)),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPageIndicator(int index) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      height: 8,
+      width: _currentPage == index ? 24 : 8,
+      decoration: BoxDecoration(
+        color: _currentPage == index ? const Color(0xFF1A73E8) : Colors.grey.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(4),
+      ),
+    );
+  }
+
+  Widget _buildTopBrandsSection(bool isDark, bool isAr) {
+    final brands = [
+      {'name': 'BMW', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png'},
+      {'name': 'Mercedes', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo_2010.svg/1024px-Mercedes-Logo_2010.svg.png'},
+      {'name': 'Tesla', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Tesla_Motors.svg/1024px-Tesla_Motors.svg.png'},
+      {'name': 'Audi', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Audi-Logo_2016.svg/1024px-Audi-Logo_2016.svg.png'},
+      {'name': 'Toyota', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Toyota_EU.svg/1024px-Toyota_EU.svg.png'},
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionHeader(isAr ? 'أفضل الماركات' : 'Top Brands', Icons.local_fire_department, Colors.redAccent, isDark, isAr),
+        const SizedBox(height: 15),
+        SizedBox(
+          height: 80,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: brands.length,
+            separatorBuilder: (context, index) => const SizedBox(width: 20),
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  Container(
+                    height: 55,
+                    width: 55,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black.withOpacity(isDark ? 0.2 : 0.05), blurRadius: 5),
+                      ],
+                    ),
+                    child: Image.network(brands[index]['logo']!),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    brands[index]['name']!, 
+                    style: TextStyle(
+                      fontSize: 12, 
+                      fontWeight: FontWeight.w500,
+                      color: isDark ? Colors.white70 : Colors.black87,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader(String title, IconData icon, Color iconColor, bool isDark, bool isAr) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Icon(icon, color: iconColor, size: 22),
+            const SizedBox(width: 8),
+            Text(
+              title, 
+              style: TextStyle(
+                fontSize: 18, 
+                fontWeight: FontWeight.bold, 
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+          ],
+        ),
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            isAr ? 'عرض الكل' : 'See All',
+            style: const TextStyle(color: Color(0xFF1A73E8)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryItem(String title, String imageUrl, Color bgColor, bool isDark) {
     return Column(
       children: [
         Container(
-          height: 60,
-          width: 60,
+          height: 70,
+          width: 75,
           decoration: BoxDecoration(
-            color: bgColor, 
-            borderRadius: BorderRadius.circular(16),
-            image: DecorationImage(
-              image: NetworkImage(imageUrl),
-              fit: BoxFit.cover,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              )
-            ],
+            color: bgColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(imageUrl, fit: BoxFit.cover),
           ),
         ),
         const SizedBox(height: 8),
-        Text(title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        Text(
+          title, 
+          style: TextStyle(
+            fontSize: 13, 
+            fontWeight: FontWeight.w600,
+            color: isDark ? Colors.white70 : Colors.black87,
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildCarCard(String name, String details, String price, String carImageUrl, String brandLogoUrl) {
+  Widget _buildCarCard(String title, String details, String price, String imageUrl, String brandLogoUrl, bool isDark) {
     return Container(
-      width: 220,
+      width: 280,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(isDark ? 0.3 : 0.05), blurRadius: 10, offset: const Offset(0, 5)),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                  child: Image.network(
-                    carImageUrl,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                child: AspectRatio(
+                  aspectRatio: 1.7,
+                  child: imageUrl.startsWith('assets/')
+                    ? Image.asset(imageUrl, fit: BoxFit.cover)
+                    : Image.network(imageUrl, fit: BoxFit.cover),
                 ),
-                Positioned(
-                  top: 12,
-                  left: 12,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      shape: BoxShape.circle,
+              ),
+              PositionedDirectional(
+                top: 12,
+                end: 12,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
+                      ),
+                      child: brandLogoUrl.startsWith('http')
+                        ? Image.network(brandLogoUrl, height: 18, width: 18)
+                        : Image.asset(brandLogoUrl, height: 18, width: 18),
                     ),
-                    child: Image.network(brandLogoUrl, height: 20, width: 20),
-                  ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.favorite_border, color: Colors.white, size: 18),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text(
+                  title, 
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold, 
+                    fontSize: 16,
+                    color: isDark ? Colors.white : Colors.black87,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 Text(details, style: const TextStyle(color: Colors.grey, fontSize: 12)),
                 const SizedBox(height: 8),
@@ -592,20 +647,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, bool isSelected) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: isSelected ? const Color(0xFF1A73E8) : Colors.grey),
-        Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? const Color(0xFF1A73E8) : Colors.grey,
-            fontSize: 12,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+  Widget _buildShowroomPlaceholder(bool isDark, bool isAr) {
+    return Expanded(
+      child: Container(
+        height: 100,
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withOpacity(0.1)),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.store, color: Colors.grey),
+              Text(
+                isAr ? 'قريباً' : 'Coming Soon',
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
