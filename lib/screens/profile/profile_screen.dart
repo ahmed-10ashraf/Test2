@@ -5,6 +5,7 @@ import '../auth/login_page.dart';
 import 'edit_profile_screen.dart';
 import 'my_ads_screen.dart';
 import 'favorites_screen.dart';
+import 'upgrade_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -54,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
                               border: Border.all(color: Colors.white, width: 3),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
+                                  color: Colors.black.withValues(alpha: 0.2),
                                   blurRadius: 10,
                                   spreadRadius: 2,
                                 )
@@ -351,7 +352,7 @@ class ProfileScreen extends StatelessWidget {
             onChanged: (val) {
               themeNotifier.value = val ? ThemeMode.dark : ThemeMode.light;
             },
-            activeColor: Colors.blue,
+            activeThumbColor: Colors.blue,
           ),
         ],
       ),
@@ -423,8 +424,10 @@ class ProfileScreen extends StatelessWidget {
                 value: 'en',
                 groupValue: localeNotifier.value.languageCode,
                 onChanged: (value) {
-                  localeNotifier.value = const Locale('en');
-                  Navigator.pop(context);
+                  if (value != null) {
+                    localeNotifier.value = const Locale('en');
+                    Navigator.pop(context);
+                  }
                 },
               ),
               onTap: () {
@@ -438,8 +441,10 @@ class ProfileScreen extends StatelessWidget {
                 value: 'ar',
                 groupValue: localeNotifier.value.languageCode,
                 onChanged: (value) {
-                  localeNotifier.value = const Locale('ar');
-                  Navigator.pop(context);
+                  if (value != null) {
+                    localeNotifier.value = const Locale('ar');
+                    Navigator.pop(context);
+                  }
                 },
               ),
               onTap: () {
@@ -457,45 +462,61 @@ class ProfileScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isAr = localeNotifier.value.languageCode == 'ar';
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.amber.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const UpgradeScreen()),
+        );
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: isDark ? 0.1 : 0.02),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            )
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.amber.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.card_giftcard, color: Colors.amber, size: 22),
             ),
-            child: const Icon(Icons.card_giftcard, color: Colors.amber, size: 22),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  isAr ? 'الترقية للنسخة المميزة' : 'Upgrade to Premium',
-                  style: TextStyle(
-                    fontSize: 16, 
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white : Colors.black87,
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isAr ? 'الترقية للنسخة المميزة' : 'Upgrade to Premium',
+                    style: TextStyle(
+                      fontSize: 16, 
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : Colors.black87,
+                    ),
                   ),
-                ),
-                Text(
-                  isAr ? 'عزز إعلاناتك واحصل على الأولوية' : 'Boost your listings & get priority',
-                  style: TextStyle(fontSize: 12, color: isDark ? Colors.white60 : Colors.grey),
-                ),
-              ],
+                  Text(
+                    isAr ? 'عزز إعلاناتك واحصل على الأولوية' : 'Boost your listings & get priority',
+                    style: TextStyle(fontSize: 12, color: isDark ? Colors.white60 : Colors.grey),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Icon(Icons.chevron_right, color: isDark ? Colors.white30 : Colors.grey, size: 20),
-        ],
+            Icon(Icons.chevron_right, color: isDark ? Colors.white30 : Colors.grey, size: 20),
+          ],
+        ),
       ),
     );
   }

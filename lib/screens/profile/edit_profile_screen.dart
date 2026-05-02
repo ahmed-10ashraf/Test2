@@ -14,7 +14,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   File? _image;
   final ImagePicker _picker = ImagePicker();
-  
+
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
@@ -97,12 +97,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return ValueListenableBuilder<Locale>(
       valueListenable: localeNotifier,
       builder: (context, locale, _) {
         final isAr = locale.languageCode == 'ar';
-        
+
         return Scaffold(
           appBar: AppBar(
             title: Text(isAr ? 'تعديل الملف الشخصي' : 'Edit Profile'),
@@ -135,10 +135,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 : const Icon(Icons.person, size: 80, color: Colors.grey),
                           ),
                         ),
-                        Positioned(
+                        PositionedDirectional(
                           bottom: 0,
-                          right: isAr ? null : 0,
-                          left: isAr ? 0 : null,
+                          end: 0,
                           child: GestureDetector(
                             onTap: () => _showImageSourceActionSheet(context, isAr),
                             child: CircleAvatar(

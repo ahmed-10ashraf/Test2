@@ -3,11 +3,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:test2/main.dart';
 import 'package:test2/data/dummy_data.dart';
-import 'package:test2/models/car_ad.dart';
 import '../profile/profile_screen.dart';
-import '../profile/my_ads_screen.dart';
 import '../profile/favorites_screen.dart';
 import '../notifications/notifications_screen.dart';
+import '../services/services_list_screen.dart';
+import 'car_details_screen.dart';
+import '../ads/add_ad_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -71,7 +72,7 @@ class _HomePageState extends State<HomePage> {
               _buildHomeContent(isDark, isAr),
               Center(child: Text(isAr ? 'شاشة البوت' : 'Chatbot Screen')),
               _buildHomeContent(isDark, isAr),
-              Center(child: Text(isAr ? 'الخدمات' : 'Services Screen')),
+              const ServicesListScreen(),
               const ProfileScreen(),
             ],
           ),
@@ -119,13 +120,23 @@ class _HomePageState extends State<HomePage> {
                     final car = featuredCars[index];
                     return Padding(
                       padding: EdgeInsetsDirectional.only(end: 15),
-                      child: _buildCarCard(
-                        isAr ? car.titleAr : car.titleEn,
-                        isAr ? car.detailsAr : car.detailsEn,
-                        isAr ? car.priceAr : car.priceEn,
-                        car.imagePath,
-                        car.brandLogo,
-                        isDark,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CarDetailsScreen(car: car),
+                            ),
+                          );
+                        },
+                        child: _buildCarCard(
+                          isAr ? car.titleAr : car.titleEn,
+                          isAr ? car.detailsAr : car.detailsEn,
+                          isAr ? car.priceAr : car.priceEn,
+                          car.imagePath,
+                          car.brandLogo,
+                          isDark,
+                        ),
                       ),
                     );
                   },
@@ -159,7 +170,7 @@ class _HomePageState extends State<HomePage> {
             color: Theme.of(context).cardColor,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
+                color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, -5),
               ),
@@ -180,9 +191,10 @@ class _HomePageState extends State<HomePage> {
           bottom: 20,
           child: GestureDetector(
             onTap: () {
-              setState(() {
-                _selectedIndex = 2;
-              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddAdScreen()),
+              );
             },
             child: Container(
               height: 60,
@@ -192,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF1A73E8).withOpacity(0.3),
+                    color: const Color(0xFF1A73E8).withValues(alpha: 0.3),
                     blurRadius: 15,
                     offset: const Offset(0, 5),
                   ),
@@ -255,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                     border: Border.all(color: const Color(0xFF1A73E8), width: 1.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
+                        color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -331,7 +343,7 @@ class _HomePageState extends State<HomePage> {
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(isDark ? 0.2 : 0.03), blurRadius: 10, offset: const Offset(0, 4)),
+          BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03), blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       child: TextField(
@@ -385,7 +397,7 @@ class _HomePageState extends State<HomePage> {
                       end: isAr ? Alignment.centerLeft : Alignment.centerRight,
                       stops: const [0.0, 0.5],
                       colors: [
-                        Colors.black.withOpacity(0.85),
+                        Colors.black.withValues(alpha: 0.85),
                         Colors.transparent,
                       ],
                     ),
@@ -411,7 +423,7 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(height: 8),
                             Text(
                               banners[index]['subtitle']!,
-                              style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
+                              style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 12),
                             ),
                             const SizedBox(height: 18),
                             ElevatedButton(
@@ -451,7 +463,7 @@ class _HomePageState extends State<HomePage> {
       height: 8,
       width: _currentPage == index ? 24 : 8,
       decoration: BoxDecoration(
-        color: _currentPage == index ? const Color(0xFF1A73E8) : Colors.grey.withOpacity(0.3),
+        color: _currentPage == index ? const Color(0xFF1A73E8) : Colors.grey.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(4),
       ),
     );
@@ -488,7 +500,7 @@ class _HomePageState extends State<HomePage> {
                       color: Theme.of(context).cardColor,
                       shape: BoxShape.circle,
                       boxShadow: [
-                        BoxShadow(color: Colors.black.withOpacity(isDark ? 0.2 : 0.05), blurRadius: 5),
+                        BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05), blurRadius: 5),
                       ],
                     ),
                     child: Image.network(brands[index]['logo']!),
@@ -575,7 +587,7 @@ class _HomePageState extends State<HomePage> {
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(isDark ? 0.3 : 0.05), blurRadius: 10, offset: const Offset(0, 5)),
+          BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05), blurRadius: 10, offset: const Offset(0, 5)),
         ],
       ),
       child: Column(
@@ -600,7 +612,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                         shape: BoxShape.circle,
                         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
                       ),
@@ -654,7 +666,7 @@ class _HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withOpacity(0.1)),
+          border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1)),
         ),
         child: Center(
           child: Column(

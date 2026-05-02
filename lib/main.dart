@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeNotifier,
-      builder: (_, ThemeMode currentMode, __) {
+      builder: (context, currentMode, child) {
         return ValueListenableBuilder<Locale>(
           valueListenable: localeNotifier,
-          builder: (_, Locale currentLocale, __) {
+          builder: (context, currentLocale, child) {
             return MaterialApp(
               title: 'Car Link',
               debugShowCheckedModeBanner: false,
