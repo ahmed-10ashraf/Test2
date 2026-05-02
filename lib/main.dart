@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test2/screens/filter/filter_screen.dart';
+import 'package:test2/screens/home_page/home_page.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/splash_screen/splash_page.dart';
 
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
                 ),
                 useMaterial3: true,
               ),
-              home: const FilterScreen(),
+              home: const HomePage(),
             );
           },
         );

@@ -10,7 +10,7 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   RangeValues _priceRange = const RangeValues(200000, 1200000);
   RangeValues _mileageRange = const RangeValues(0, 50000);
-
+  
   String selectedCondition = 'All';
   String selectedTransmission = 'Any';
   String selectedBodyType = 'All';
@@ -31,7 +31,7 @@ class _FilterScreenState extends State<FilterScreen> {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 5,
                 )
               ],
@@ -279,7 +279,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    const Color(0xFFF8FAFF).withOpacity(0),
+                    const Color(0xFFF8FAFF).withValues(alpha: 0),
                     const Color(0xFFF8FAFF),
                     const Color(0xFFF8FAFF),
                   ],
@@ -294,7 +294,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     borderRadius: BorderRadius.circular(35),
                   ),
                   elevation: 8,
-                  shadowColor: const Color(0xFF1A73E8).withOpacity(0.5),
+                  shadowColor: const Color(0xFF1A73E8).withValues(alpha: 0.5),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -357,7 +357,7 @@ class _FilterScreenState extends State<FilterScreen> {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFF1A73E8).withOpacity(0.2),
+                    color: const Color(0xFF1A73E8).withValues(alpha: 0.2),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   )
