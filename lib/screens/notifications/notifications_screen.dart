@@ -6,8 +6,6 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
     return ValueListenableBuilder<Locale>(
       valueListenable: localeNotifier,
       builder: (context, locale, _) {
@@ -29,14 +27,14 @@ class NotificationsScreen extends StatelessWidget {
                 Icon(
                   Icons.notifications_none_outlined,
                   size: 80,
-                  color: Colors.grey.withOpacity(0.5),
+                  color: Colors.grey.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   isAr ? 'لا توجد إشعارات حالياً' : 'No notifications yet',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.grey.withOpacity(0.8),
+                    color: Colors.grey.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w500,
                   ),
                 ),

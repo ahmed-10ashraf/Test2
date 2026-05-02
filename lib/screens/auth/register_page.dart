@@ -292,7 +292,7 @@ class _RegisterPageState extends State<RegisterPage> {
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-        prefixIcon: Icon(icon, color: const Color(0xFF1A73E8).withOpacity(0.4), size: 20),
+        prefixIcon: Icon(icon, color: const Color(0xFF1A73E8).withValues(alpha: 0.4), size: 20),
         filled: true,
         fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade50,
         border: OutlineInputBorder(

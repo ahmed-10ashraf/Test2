@@ -8,7 +8,6 @@ import '../profile/profile_screen.dart';
 import '../profile/my_ads_screen.dart';
 import '../profile/favorites_screen.dart';
 import '../notifications/notifications_screen.dart';
-import '../filter/filter_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -326,33 +325,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSearchBar(bool isDark, bool isAr) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const FilterScreen()),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(isDark ? 0.2 : 0.03), blurRadius: 10, offset: const Offset(0, 4)),
-          ],
-        ),
-        child: TextField(
-          enabled: false, // تعطيل الكتابة ليقوم الـ GestureDetector بالتعامل مع الضغطة
-          textAlign: isAr ? TextAlign.right : TextAlign.left,
-          style: TextStyle(color: isDark ? Colors.white : Colors.black87),
-          decoration: InputDecoration(
-            icon: isAr ? null : const Icon(Icons.search, color: Colors.grey),
-            suffixIcon: isAr ? const Icon(Icons.search, color: Colors.grey) : null,
-            hintText: isAr ? 'ابحث عن الماركات، الموديلات...' : 'Search for brands, models...',
-            hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-            border: InputBorder.none,
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(isDark ? 0.2 : 0.03), blurRadius: 10, offset: const Offset(0, 4)),
+        ],
+      ),
+      child: TextField(
+        textAlign: isAr ? TextAlign.right : TextAlign.left,
+        style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+        decoration: InputDecoration(
+          icon: isAr ? null : const Icon(Icons.search, color: Colors.grey),
+          suffixIcon: isAr ? const Icon(Icons.search, color: Colors.grey) : null,
+          hintText: isAr ? 'ابحث عن الماركات، الموديلات...' : 'Search for brands, models...',
+          hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+          border: InputBorder.none,
         ),
       ),
     );

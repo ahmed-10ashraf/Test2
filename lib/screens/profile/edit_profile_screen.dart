@@ -13,7 +13,7 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   File? _image;
-  // final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
 
   late TextEditingController _nameController;
   late TextEditingController _emailController;
@@ -45,54 +45,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
-  // Future<void> _pickImage(ImageSource source) async {
-  //   try {
-  //     final XFile? pickedFile = await _picker.pickImage(
-  //       source: source,
-  //       maxWidth: 512,
-  //       maxHeight: 512,
-  //       imageQuality: 75,
-  //     );
-  //     if (pickedFile != null) {
-  //       setState(() {
-  //         _image = File(pickedFile.path);
-  //       });
-  //     }
-  //   } catch (e) {
-  //     debugPrint("Error picking image: $e");
-  //   }
-  // }
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(
+        source: source,
+        maxWidth: 512,
+        maxHeight: 512,
+        imageQuality: 75,
+      );
+      if (pickedFile != null) {
+        setState(() {
+          _image = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      debugPrint("Error picking image: $e");
+    }
+  }
 
-  // void _showImageSourceActionSheet(BuildContext context, bool isAr) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-  //     ),
-  //     builder: (context) => SafeArea(
-  //       child: Wrap(
-  //         children: [
-  //           ListTile(
-  //             leading: const Icon(Icons.photo_library),
-  //             title: Text(isAr ? 'معرض الصور' : 'Gallery'),
-  //             onTap: () {
-  //               Navigator.pop(context);
-  //               _pickImage(ImageSource.gallery);
-  //             },
-  //           ),
-  //           ListTile(
-  //             leading: const Icon(Icons.camera_alt),
-  //             title: Text(isAr ? 'الكاميرا' : 'Camera'),
-  //             onTap: () {
-  //               Navigator.pop(context);
-  //               _pickImage(ImageSource.camera);
-  //             },
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  void _showImageSourceActionSheet(BuildContext context, bool isAr) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: Text(isAr ? 'معرض الصور' : 'Gallery'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: Text(isAr ? 'الكاميرا' : 'Camera'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.camera);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,19 +135,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 : const Icon(Icons.person, size: 80, color: Colors.grey),
                           ),
                         ),
-                        // Positioned(
-                        //   bottom: 0,
-                        //   right: isAr ? null : 0,
-                        //   left: isAr ? 0 : null,
-                        //   child: GestureDetector(
-                        //     onTap: () => _showImageSourceActionSheet(context, isAr),
-                        //     child: CircleAvatar(
-                        //       backgroundColor: const Color(0xFF1A73E8),
-                        //       radius: 18,
-                        //       child: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
-                        //     ),
-                        //   ),
-                        // ),
+                        PositionedDirectional(
+                          bottom: 0,
+                          end: 0,
+                          child: GestureDetector(
+                            onTap: () => _showImageSourceActionSheet(context, isAr),
+                            child: CircleAvatar(
+                              backgroundColor: const Color(0xFF1A73E8),
+                              radius: 18,
+                              child: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 30),
