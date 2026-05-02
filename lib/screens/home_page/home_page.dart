@@ -8,6 +8,10 @@ import '../profile/profile_screen.dart';
 import '../profile/my_ads_screen.dart';
 import '../profile/favorites_screen.dart';
 import '../notifications/notifications_screen.dart';
+import '../filter/filter_screen.dart';
+import 'chatbot_page.dart';
+import 'add_page.dart';
+import 'services_list_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -69,9 +73,9 @@ class _HomePageState extends State<HomePage> {
             index: _selectedIndex,
             children: [
               _buildHomeContent(isDark, isAr),
-              Center(child: Text(isAr ? 'شاشة البوت' : 'Chatbot Screen')),
-              _buildHomeContent(isDark, isAr),
-              Center(child: Text(isAr ? 'الخدمات' : 'Services Screen')),
+              const ChatbotPage(),
+              const AddPage(),
+              const ServicesListScreen(),
               const ProfileScreen(),
             ],
           ),
@@ -118,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     final car = featuredCars[index];
                     return Padding(
-                      padding: EdgeInsetsDirectional.only(end: 15),
+                      padding: const EdgeInsetsDirectional.only(end: 15),
                       child: _buildCarCard(
                         isAr ? car.titleAr : car.titleEn,
                         isAr ? car.detailsAr : car.detailsEn,
@@ -325,24 +329,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSearchBar(bool isDark, bool isAr) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(isDark ? 0.2 : 0.03), blurRadius: 10, offset: const Offset(0, 4)),
-        ],
-      ),
-      child: TextField(
-        textAlign: isAr ? TextAlign.right : TextAlign.left,
-        style: TextStyle(color: isDark ? Colors.white : Colors.black87),
-        decoration: InputDecoration(
-          icon: isAr ? null : const Icon(Icons.search, color: Colors.grey),
-          suffixIcon: isAr ? const Icon(Icons.search, color: Colors.grey) : null,
-          hintText: isAr ? 'ابحث عن الماركات، الموديلات...' : 'Search for brands, models...',
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-          border: InputBorder.none,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const FilterScreen()),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(isDark ? 0.2 : 0.03), blurRadius: 10, offset: const Offset(0, 4)),
+          ],
+        ),
+        child: TextField(
+          enabled: false,
+          textAlign: isAr ? TextAlign.right : TextAlign.left,
+          style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+          decoration: InputDecoration(
+            icon: isAr ? null : const Icon(Icons.search, color: Colors.grey),
+            suffixIcon: isAr ? const Icon(Icons.search, color: Colors.grey) : null,
+            hintText: isAr ? 'ابحث عن الماركات، الموديلات...' : 'Search for brands, models...',
+            hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
