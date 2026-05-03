@@ -29,13 +29,13 @@ class MyAdsScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(30),
                   decoration: BoxDecoration(
-                    color: Colors.blue.withValues(alpha: 0.1),
+                    color: const Color(0xFF1565C0).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.assignment_late_outlined,
                     size: 80,
-                    color: Colors.blue.withValues(alpha: 0.5),
+                    color: const Color(0xFF1565C0).withValues(alpha: 0.5),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -73,7 +73,7 @@ class MyAdsScreen extends StatelessWidget {
                   icon: const Icon(Icons.add),
                   label: Text(isAr ? 'أضف إعلانك الأول' : 'Add Your First Ad'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1A73E8),
+                    backgroundColor: const Color(0xFF1565C0),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -89,3 +89,4 @@ class MyAdsScreen extends StatelessWidget {
     );
   }
 }
+

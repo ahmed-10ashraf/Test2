@@ -28,16 +28,16 @@ class ProfileScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.only(top: 60, bottom: 30),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color(0xFF00D2A0),
-                        Color(0xFF1A73E8),
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.secondary,
                       ],
                     ),
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(30),
                       bottomRight: Radius.circular(30),
                     ),
@@ -143,9 +143,8 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       _buildMenuItem(
                         context,
-                        Icons.edit,
+                        Icons.person_outline,
                         isAr ? 'تعديل الملف الشخصي' : 'Edit Profile',
-                        iconColor: Colors.orange,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -155,10 +154,9 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       _buildMenuItem(
                         context,
-                        Icons.assignment_outlined,
+                        Icons.list_alt_outlined,
                         isAr ? 'إعلاناتي' : 'My Ads',
                         badge: '0',
-                        iconColor: Colors.blue,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -168,9 +166,8 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       _buildMenuItem(
                         context,
-                        Icons.favorite,
+                        Icons.favorite_border,
                         isAr ? 'المفضلة' : 'Favorites',
-                        iconColor: Colors.pink,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -181,13 +178,13 @@ class ProfileScreen extends StatelessWidget {
                       _buildThemeToggle(context),
                       _buildLanguageItem(context),
                       _buildUpgradeItem(context),
-                      _buildMenuItem(context, Icons.support_agent, isAr ? 'الدعم والأسئلة الشائعة' : 'Support & FAQ', iconColor: Colors.orangeAccent),
+                      _buildMenuItem(context, Icons.help_outline, isAr ? 'الدعم والأسئلة الشائعة' : 'Support & FAQ'),
                       _buildMenuItem(
                         context,
                         Icons.logout,
                         isAr ? 'تسجيل الخروج' : 'Logout',
-                        iconColor: Colors.red,
-                        textColor: Colors.red,
+                        iconColor: Colors.redAccent,
+                        textColor: Colors.redAccent,
                         showArrow: false,
                         onTap: () {
                           showDialog(
@@ -233,7 +230,7 @@ class ProfileScreen extends StatelessWidget {
       children: [
         Text(
           value,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1A73E8)),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
         ),
         const SizedBox(height: 4),
         Text(
@@ -251,6 +248,7 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildMenuItem(BuildContext context, IconData icon, String title,
       {String? badge, String? trailingText, Color? iconColor, Color? textColor, bool showArrow = true, VoidCallback? onTap}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primaryBlue = Theme.of(context).primaryColor;
     
     return InkWell(
       onTap: onTap,
@@ -274,10 +272,10 @@ class ProfileScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: (iconColor ?? Colors.blue).withValues(alpha: 0.1),
+                color: (iconColor ?? primaryBlue).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: iconColor ?? Colors.blue, size: 22),
+              child: Icon(icon, color: iconColor ?? primaryBlue, size: 22),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -294,12 +292,12 @@ class ProfileScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.1),
+                  color: primaryBlue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   badge,
-                  style: const TextStyle(color: Colors.blue, fontSize: 12, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: primaryBlue, fontSize: 12, fontWeight: FontWeight.bold),
                 ),
               ),
             if (trailingText != null)
@@ -325,16 +323,23 @@ class ProfileScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.1 : 0.02),
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          )
+        ],
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.orange.withValues(alpha: 0.1),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.brightness_2, color: Colors.orange, size: 22),
+            child: Icon(Icons.dark_mode_outlined, color: Theme.of(context).primaryColor, size: 22),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -352,7 +357,8 @@ class ProfileScreen extends StatelessWidget {
             onChanged: (val) {
               themeNotifier.value = val ? ThemeMode.dark : ThemeMode.light;
             },
-            activeThumbColor: Colors.blue,
+            activeThumbColor: Colors.white,
+            activeColor: Theme.of(context).primaryColor,
           ),
         ],
       ),
@@ -369,22 +375,30 @@ class ProfileScreen extends StatelessWidget {
           onTap: () {
             _showLanguageDialog(context);
           },
+          borderRadius: BorderRadius.circular(16),
           child: Container(
             margin: const EdgeInsets.only(bottom: 15),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: isDark ? 0.1 : 0.02),
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                )
+              ],
             ),
             child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.teal.withValues(alpha: 0.1),
+                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.language, color: Colors.teal, size: 22),
+                  child: Icon(Icons.language_outlined, color: Theme.of(context).primaryColor, size: 22),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -489,10 +503,10 @@ class ProfileScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.amber.withValues(alpha: 0.1),
+                color: const Color(0xFF1E88E5).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.card_giftcard, color: Colors.amber, size: 22),
+              child: const Icon(Icons.star_outline, color: Color(0xFF1E88E5), size: 22),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -521,3 +535,4 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+

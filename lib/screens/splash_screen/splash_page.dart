@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: const Color(0xFF1A73E8),
+        color: const Color(0xFF1565C0),
         child: Stack(
           children: [
             // Subtle circular decorations
@@ -102,14 +102,14 @@ class _SplashPageState extends State<SplashPage> {
                         const Icon(
                           Icons.directions_car,
                           size: 60,
-                          color: Color(0xFF1A73E8),
+                          color: const Color(0xFF1565C0),
                         ),
                         Positioned(
                           top: 25,
                           child: Icon(
                             Icons.wifi,
                             size: 20,
-                            color: const Color(0xFF1A73E8).withValues(alpha: 0.8),
+                            color: const Color(0xFF1565C0).withValues(alpha: 0.8),
                           ),
                         ),
                       ],
@@ -160,3 +160,4 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 }
+

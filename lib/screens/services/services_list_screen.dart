@@ -30,7 +30,7 @@ class ServicesListScreen extends StatelessWidget {
                 isDark: isDark,
                 title: isAr ? 'معارض السيارات' : 'Car Showrooms',
                 icon: Icons.inventory_2_outlined,
-                iconColor: const Color(0xFF1A73E8),
+                iconColor: const Color(0xFF1565C0),
                 badgeText: '+3K',
                 badgeColor: const Color(0xFFE3F2FD),
                 items: [
@@ -56,10 +56,10 @@ class ServicesListScreen extends StatelessWidget {
                     title: isAr ? 'معارض موثقة' : 'Verified Showrooms',
                     icon: Icons.verified_user_outlined,
                     iconColor: const Color(0xFFE3F2FD),
-                    iconWidgetColor: const Color(0xFF1A73E8),
+                    iconWidgetColor: const Color(0xFF1565C0),
                     leftBadge: isAr ? 'موثق' : 'Verified',
                     leftBadgeColor: const Color(0xFFE3F2FD),
-                    leftBadgeTextColor: const Color(0xFF1A73E8),
+                    leftBadgeTextColor: const Color(0xFF1565C0),
                   ),
                 ],
               ),
@@ -87,7 +87,7 @@ class ServicesListScreen extends StatelessWidget {
                     title: isAr ? 'شركات التأمين' : 'Insurance Companies',
                     icon: Icons.verified_user_outlined,
                     iconColor: const Color(0xFFE3F2FD),
-                    iconWidgetColor: const Color(0xFF1A73E8),
+                    iconWidgetColor: const Color(0xFF1565C0),
                     leftBadge: isAr ? 'جديد' : 'New',
                     leftBadgeColor: const Color(0xFFFFF8E1),
                     leftBadgeTextColor: Colors.orange[800]!,
@@ -127,7 +127,7 @@ class ServicesListScreen extends StatelessWidget {
                     title: isAr ? 'خدمات الصيانة' : 'Maintenance Services',
                     icon: Icons.build_outlined,
                     iconColor: const Color(0xFFE3F2FD),
-                    iconWidgetColor: const Color(0xFF1A73E8),
+                    iconWidgetColor: const Color(0xFF1565C0),
                   ),
                   _buildServiceItem(
                     isAr: isAr,
@@ -153,7 +153,7 @@ class ServicesListScreen extends StatelessWidget {
                     title: isAr ? 'تمويل سيارات جديدة' : 'New Car Financing',
                     icon: Icons.attach_money,
                     iconColor: const Color(0xFFE3F2FD),
-                    iconWidgetColor: const Color(0xFF1A73E8),
+                    iconWidgetColor: const Color(0xFF1565C0),
                   ),
                   _buildServiceItem(
                     isAr: isAr,
@@ -269,7 +269,7 @@ class ServicesListScreen extends StatelessWidget {
                     ),
                     child: Text(
                       badgeText,
-                      style: const TextStyle(color: Color(0xFF1A73E8), fontSize: 13, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: Color(0xFF1565C0), fontSize: 13, fontWeight: FontWeight.bold),
                     ),
                   ),
                 if (leftBadge != null)
@@ -348,7 +348,7 @@ class ServicesListScreen extends StatelessWidget {
                 child: Text(
                   leftBadge,
                   style: TextStyle(
-                    color: leftBadgeTextColor ?? const Color(0xFF1A73E8), 
+                    color: leftBadgeTextColor ?? const Color(0xFF1565C0),
                     fontSize: 11, 
                     fontWeight: FontWeight.bold,
                   ),
@@ -432,3 +432,4 @@ class ServicesListScreen extends StatelessWidget {
     );
   }
 }
+

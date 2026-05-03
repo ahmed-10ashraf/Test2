@@ -13,29 +13,42 @@ class NotificationsScreen extends StatelessWidget {
         
         return Scaffold(
           appBar: AppBar(
-            title: Text(isAr ? 'الإشعارات' : 'Notifications'),
+            title: Text(isAr ? 'الإشعارات' : 'Notifications', style: const TextStyle(fontWeight: FontWeight.bold)),
             centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
-            ),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
           ),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.notifications_none_outlined,
-                  size: 80,
-                  color: Colors.grey.withValues(alpha: 0.5),
+                Container(
+                  padding: const EdgeInsets.all(30),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1565C0).withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.notifications_none_outlined,
+                    size: 80,
+                    color: Color(0xFF1565C0),
+                  ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
                 Text(
                   isAr ? 'لا توجد إشعارات حالياً' : 'No notifications yet',
                   style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey.withValues(alpha: 0.8),
-                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  isAr ? 'سنقوم بإخطارك عند وجود تحديثات جديدة' : 'We will notify you when there are new updates',
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
                   ),
                 ),
               ],
@@ -46,3 +59,4 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 }
+

@@ -40,27 +40,47 @@ class MyApp extends StatelessWidget {
               // الثيم الفاتح (أبيض وأزرق)
               theme: ThemeData(
                 brightness: Brightness.light,
-                primaryColor: const Color(0xFF1A73E8),
-                scaffoldBackgroundColor: const Color(0xFFF8FAFF),
+                primaryColor: const Color(0xFF1565C0),
+                scaffoldBackgroundColor: Colors.white,
                 cardColor: Colors.white,
                 colorScheme: ColorScheme.fromSeed(
-                  seedColor: const Color(0xFF1A73E8),
-                  primary: const Color(0xFF1A73E8),
+                  seedColor: const Color(0xFF1565C0),
+                  primary: const Color(0xFF1565C0),
+                  secondary: const Color(0xFF42A5F5),
                   surface: Colors.white,
+                  outline: const Color(0xFFE3F2FD),
                 ),
                 useMaterial3: true,
               ),
-              // الثيم الداكن (أسود وأزرق)
+              // الثيم الداكن (أسود وأزرق احترافي)
               darkTheme: ThemeData(
                 brightness: Brightness.dark,
-                primaryColor: const Color(0xFF1A73E8),
-                scaffoldBackgroundColor: Colors.black,
-                cardColor: const Color(0xFF121212),
+                primaryColor: const Color(0xFF1E88E5),
+                scaffoldBackgroundColor: const Color(0xFF0B0F14),
+                cardColor: const Color(0xFF121821),
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Color(0xFF121821),
+                  elevation: 0,
+                  centerTitle: true,
+                ),
                 colorScheme: ColorScheme.fromSeed(
                   brightness: Brightness.dark,
-                  seedColor: const Color(0xFF1A73E8),
-                  primary: const Color(0xFF1A73E8),
-                  surface: const Color(0xFF121212),
+                  seedColor: const Color(0xFF1E88E5),
+                  primary: const Color(0xFF1E88E5),
+                  secondary: const Color(0xFF42A5F5),
+                  surface: const Color(0xFF121821),
+                  outline: const Color(0xFF1E1E1E),
+                ),
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1E88E5),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
+                textTheme: const TextTheme(
+                  bodyLarge: TextStyle(color: Color(0xFFE3F2FD)),
+                  bodyMedium: TextStyle(color: Color(0xFFB0BEC5)),
                 ),
                 useMaterial3: true,
               ),

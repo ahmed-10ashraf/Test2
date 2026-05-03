@@ -14,15 +14,12 @@ class _AddAdScreenState extends State<AddAdScreen> {
   final List<File> _images = [];
   final _formKey = GlobalKey<FormState>();
   
-  final _titleController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _kmController = TextEditingController();
-  final _yearController = TextEditingController();
   
   String? _selectedBrand;
-  String? _selectedCategory;
-  String? _selectedTransmission;
+  String? _selectedModel;
+  String? _selectedYear;
 
   Future<void> _pickImages() async {
     final picker = ImagePicker();
@@ -45,130 +42,113 @@ class _AddAdScreenState extends State<AddAdScreen> {
         final isAr = locale.languageCode == 'ar';
         
         return Scaffold(
+          backgroundColor: isDark ? const Color(0xFF0B0F14) : Colors.white,
           appBar: AppBar(
-            title: Text(isAr ? 'إضافة إعلان جديد' : 'Add New Ad'),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: Text(
+              isAr ? 'أضف سيارة' : 'Add Car',
+              style: TextStyle(
+                color: isDark ? Colors.white : const Color(0xFF0D47A1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             centerTitle: true,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: isDark ? Colors.white : const Color(0xFF0D47A1)),
+              onPressed: () => Navigator.pop(context),
+            ),
           ),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    isAr ? 'بيانات السيارة' : 'Car Details',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : const Color(0xFF0D47A1),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   _buildImagePicker(isAr, isDark),
                   const SizedBox(height: 25),
-                  _buildSectionTitle(isAr ? 'المعلومات الأساسية' : 'Basic Information', isDark),
-                  const SizedBox(height: 15),
-                  _buildTextField(
-                    controller: _titleController,
-                    label: isAr ? 'عنوان الإعلان' : 'Ad Title',
-                    hint: isAr ? 'مثال: تويوتا كورولا 2023 بحالة ممتازة' : 'e.g. Toyota Corolla 2023 Excellent Condition',
+                  
+                  _buildModernDropdown(
+                    label: isAr ? 'الماركة' : 'Brand',
+                    value: _selectedBrand,
+                    items: ['Toyota', 'Hyundai', 'BMW', 'Mercedes', 'Audi'],
+                    onChanged: (val) => setState(() => _selectedBrand = val),
                     isDark: isDark,
+                    isAr: isAr,
                   ),
                   const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildDropdown(
-                          label: isAr ? 'الماركة' : 'Brand',
-                          value: _selectedBrand,
-                          items: ['Toyota', 'Hyundai', 'BMW', 'Mercedes', 'Audi'],
-                          onChanged: (val) => setState(() => _selectedBrand = val),
-                          isDark: isDark,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: _buildDropdown(
-                          label: isAr ? 'الفئة' : 'Category',
-                          value: _selectedCategory,
-                          items: isAr ? ['سيدان', 'دفع رباعي', 'هاتشباك'] : ['Sedan', 'SUV', 'Hatchback'],
-                          onChanged: (val) => setState(() => _selectedCategory = val),
-                          isDark: isDark,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 25),
-                  _buildSectionTitle(isAr ? 'المواصفات' : 'Specifications', isDark),
-                  const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildTextField(
-                          controller: _yearController,
-                          label: isAr ? 'السنة' : 'Year',
-                          hint: '2024',
-                          keyboardType: TextInputType.number,
-                          isDark: isDark,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: _buildTextField(
-                          controller: _kmController,
-                          label: isAr ? 'المسافة (كم)' : 'Mileage (KM)',
-                          hint: '0',
-                          keyboardType: TextInputType.number,
-                          isDark: isDark,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  _buildDropdown(
-                    label: isAr ? 'ناقل الحركة' : 'Transmission',
-                    value: _selectedTransmission,
-                    items: isAr ? ['أوتوماتيك', 'مانيوال'] : ['Automatic', 'Manual'],
-                    onChanged: (val) => setState(() => _selectedTransmission = val),
+                  
+                  _buildModernDropdown(
+                    label: isAr ? 'الموديل' : 'Model',
+                    value: _selectedModel,
+                    items: ['Camry', 'Elantra', 'X5', 'C-Class', 'A4'],
+                    onChanged: (val) => setState(() => _selectedModel = val),
                     isDark: isDark,
+                    isAr: isAr,
                   ),
-                  const SizedBox(height: 25),
-                  _buildSectionTitle(isAr ? 'السعر والوصف' : 'Price & Description', isDark),
                   const SizedBox(height: 15),
-                  _buildTextField(
+                  
+                  _buildModernDropdown(
+                    label: isAr ? 'السنة' : 'Year',
+                    value: _selectedYear,
+                    items: List.generate(30, (index) => (2025 - index).toString()),
+                    onChanged: (val) => setState(() => _selectedYear = val),
+                    isDark: isDark,
+                    isAr: isAr,
+                  ),
+                  const SizedBox(height: 15),
+                  
+                  _buildModernTextField(
                     controller: _priceController,
-                    label: isAr ? 'السعر (ج.م)' : 'Price (EGP)',
-                    hint: '1,000,000',
+                    label: isAr ? 'السعر' : 'Price',
+                    hint: isAr ? 'أدخل السعر' : 'Enter price',
                     keyboardType: TextInputType.number,
                     isDark: isDark,
+                    isAr: isAr,
                   ),
                   const SizedBox(height: 15),
-                  _buildTextField(
+                  
+                  _buildModernTextField(
                     controller: _descriptionController,
                     label: isAr ? 'الوصف' : 'Description',
-                    hint: isAr ? 'اكتب تفاصيل السيارة هنا...' : 'Write car details here...',
-                    maxLines: 4,
+                    hint: isAr ? 'أدخل تفاصيل السيارة' : 'Enter car details',
+                    maxLines: 3,
                     isDark: isDark,
+                    isAr: isAr,
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 40),
+                  
                   SizedBox(
                     width: double.infinity,
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // Submit logic
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(isAr ? 'تم نشر الإعلان بنجاح' : 'Ad posted successfully')),
-                          );
                           Navigator.pop(context);
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1A73E8),
-                        foregroundColor: Colors.white,
+                        backgroundColor: const Color(0xFF1E88E5),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                         elevation: 0,
                       ),
                       child: Text(
-                        isAr ? 'نشر الإعلان' : 'Post Ad',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        isAr ? 'حفظ' : 'Save',
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
@@ -178,169 +158,155 @@ class _AddAdScreenState extends State<AddAdScreen> {
     );
   }
 
-  Widget _buildSectionTitle(String title, bool isDark) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: isDark ? Colors.white : Colors.black87,
+  Widget _buildImagePicker(bool isAr, bool isDark) {
+    return GestureDetector(
+      onTap: _pickImages,
+      child: Container(
+        width: 120,
+        height: 120,
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF121821) : Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.blue.withOpacity(0.2)),
+        ),
+        child: _images.isEmpty 
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.camera_alt_outlined, color: const Color(0xFF1E88E5), size: 40),
+                const SizedBox(height: 8),
+                Text(
+                  isAr ? 'إضافة صور' : 'Add Photos',
+                  style: const TextStyle(color: Color(0xFF0D47A1), fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+              ],
+            )
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.file(_images.first, fit: BoxFit.cover),
+            ),
       ),
     );
   }
 
-  Widget _buildImagePicker(bool isAr, bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle(isAr ? 'صور السيارة' : 'Car Photos', isDark),
-        const SizedBox(height: 15),
-        SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _images.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return GestureDetector(
-                  onTap: _pickImages,
-                  child: Container(
-                    width: 100,
-                    margin: const EdgeInsetsDirectional.only(end: 10),
-                    decoration: BoxDecoration(
-                      color: isDark ? Colors.white10 : Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: isDark ? Colors.white24 : Colors.grey.shade300, style: BorderStyle.solid),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add_a_photo_outlined, color: const Color(0xFF1A73E8)),
-                        const SizedBox(height: 4),
-                        Text(isAr ? 'أضف صور' : 'Add Photos', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                      ],
-                    ),
-                  ),
-                );
-              }
-              return Stack(
-                children: [
-                  Container(
-                    width: 100,
-                    margin: const EdgeInsetsDirectional.only(end: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      image: DecorationImage(
-                        image: FileImage(_images[index - 1]),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 5,
-                    right: 15,
-                    child: GestureDetector(
-                      onTap: () => setState(() => _images.removeAt(index - 1)),
-                      child: Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                        child: const Icon(Icons.close, size: 14, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-    bool isDark = false,
-    TextInputType keyboardType = TextInputType.text,
-    int maxLines = 1,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.grey)),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType,
-          maxLines: maxLines,
-          style: TextStyle(color: isDark ? Colors.white : Colors.black87),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-            filled: true,
-            fillColor: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: isDark ? Colors.white10 : Colors.grey.shade200),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: isDark ? Colors.white10 : Colors.grey.shade200),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF1A73E8)),
-            ),
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Required field';
-            }
-            return null;
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDropdown({
+  Widget _buildModernDropdown({
     required String label,
     required String? value,
     required List<String> items,
     required Function(String?) onChanged,
-    bool isDark = false,
+    required bool isDark,
+    required bool isAr,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.grey)),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: isDark ? Colors.white10 : Colors.grey.shade200),
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF121821) : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blue.withOpacity(0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          )
+        ],
+      ),
+      child: Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Icon(Icons.keyboard_arrow_down, color: Colors.blueGrey, size: 20),
           ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: value,
-              isExpanded: true,
-              hint: Text('Select', style: TextStyle(color: Colors.grey.shade400, fontSize: 14)),
-              dropdownColor: isDark ? const Color(0xFF1A1A1A) : Colors.white,
-              items: items.map((String item) {
-                return DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item, style: TextStyle(color: isDark ? Colors.white : Colors.black87)),
-                );
-              }).toList(),
-              onChanged: onChanged,
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: value,
+                isExpanded: true,
+                hint: Text('', style: TextStyle(color: Colors.grey.shade400)),
+                dropdownColor: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+                items: items.map((String item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item, style: TextStyle(color: isDark ? Colors.white : Colors.black87, fontSize: 14)),
+                  );
+                }).toList(),
+                onChanged: onChanged,
+              ),
             ),
           ),
-        ),
-      ],
+          Container(height: 30, width: 1, color: Colors.blue.withOpacity(0.1)),
+          Container(
+            width: 100,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            alignment: isAr ? Alignment.centerRight : Alignment.centerLeft,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: isDark ? Colors.white70 : const Color(0xFF0D47A1),
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required bool isDark,
+    required bool isAr,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF121821) : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blue.withOpacity(0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          )
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              controller: controller,
+              keyboardType: keyboardType,
+              maxLines: maxLines,
+              textAlign: isAr ? TextAlign.right : TextAlign.left,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87, fontSize: 14),
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          Container(height: 30, width: 1, color: Colors.blue.withOpacity(0.1)),
+          Container(
+            width: 100,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            alignment: isAr ? Alignment.centerRight : Alignment.centerLeft,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: isDark ? Colors.white70 : const Color(0xFF0D47A1),
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

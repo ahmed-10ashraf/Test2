@@ -66,7 +66,7 @@ class FavoritesScreen extends StatelessWidget {
                     Navigator.pop(context); // العودة للرئيسية للتصفح
                   },
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Color(0xFF1A73E8)),
+                    side: const BorderSide(color: Color(0xFF1565C0)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -74,7 +74,7 @@ class FavoritesScreen extends StatelessWidget {
                   ),
                   child: Text(
                     isAr ? 'تصفح السيارات' : 'Browse Cars',
-                    style: const TextStyle(color: Color(0xFF1A73E8)),
+                    style: const TextStyle(color: Color(0xFF1565C0)),
                   ),
                 ),
               ],
@@ -85,3 +85,4 @@ class FavoritesScreen extends StatelessWidget {
     );
   }
 }
+

@@ -70,8 +70,8 @@ class _HomePageState extends State<HomePage> {
             index: _selectedIndex,
             children: [
               _buildHomeContent(isDark, isAr),
-              Center(child: Text(isAr ? 'شاشة البوت' : 'Chatbot Screen')),
-              _buildHomeContent(isDark, isAr),
+              _buildPlaceholder(isAr ? 'بوت الدردشة' : 'ChatBot', Icons.smart_toy_outlined, isDark, isAr),
+              _buildHomeContent(isDark, isAr), // This was supposed to be the "Add Car" trigger or placeholder
               const ServicesListScreen(),
               const ProfileScreen(),
             ],
@@ -102,10 +102,10 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildCategoryItem(isAr ? 'سيدان' : 'Sedans', 'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&q=80&w=200', isDark ? Colors.blue.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
-                  _buildCategoryItem(isAr ? 'دفع رباعي' : 'SUVs', 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80&w=200', isDark ? Colors.teal.withValues(alpha: 0.1) : const Color(0xFFE0F2F1), isDark),
-                  _buildCategoryItem(isAr ? 'هاتشباك' : 'Hatchback', 'https://images.unsplash.com/photo-1590362891175-3794ef169f2a?auto=format&fit=crop&q=80&w=200', isDark ? Colors.orange.withValues(alpha: 0.1) : const Color(0xFFFFF3E0), isDark),
-                  _buildCategoryItem(isAr ? 'رياضية' : 'Sports', 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=200', isDark ? Colors.purple.withValues(alpha: 0.1) : const Color(0xFFF3E5F5), isDark),
+                  _buildCategoryItem(isAr ? 'سيدان' : 'Sedans', 'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
+                  _buildCategoryItem(isAr ? 'دفع رباعي' : 'SUVs', 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
+                  _buildCategoryItem(isAr ? 'هاتشباك' : 'Hatchback', 'https://images.unsplash.com/photo-1590362891175-3794ef169f2a?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
+                  _buildCategoryItem(isAr ? 'رياضية' : 'Sports', 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
                 ],
               ),
               const SizedBox(height: 25),
@@ -161,60 +161,66 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildBottomNavBar(bool isDark, bool isAr) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Container(
-          height: 70,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
-                blurRadius: 10,
-                offset: const Offset(0, -5),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(Icons.home, isAr ? 'الرئيسية' : 'Home', 0),
-              _buildNavItem(Icons.chat_bubble_outline, isAr ? 'البوت' : 'Chatbot', 1),
-              const SizedBox(width: 40),
-              _buildNavItem(Icons.menu, isAr ? 'الخدمات' : 'Services', 3),
-              _buildNavItem(Icons.person_outline, isAr ? 'حسابي' : 'Profile', 4),
-            ],
-          ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+      child: Container(
+        height: 75,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor, 
+          borderRadius: BorderRadius.circular(35),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
+            ),
+          ],
         ),
-        Positioned(
-          bottom: 20,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddAdScreen()),
-              );
-            },
-            child: Container(
-              height: 60,
-              width: 60,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1A73E8),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF1A73E8).withValues(alpha: 0.3),
-                    blurRadius: 15,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: const Icon(Icons.add, color: Colors.white, size: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildNavItem(Icons.home_outlined, isAr ? 'الرئيسية' : 'Home', 0),
+            _buildNavItem(Icons.smart_toy_outlined, isAr ? 'بوت' : 'ChatBot', 1),
+            // الزر الأوسط البارز (أضف سيارة / إعلان)
+            _buildCenterNavItem(isAr),
+            _buildNavItem(Icons.miscellaneous_services_outlined, isAr ? 'خدمات' : 'Services', 3),
+            _buildNavItem(Icons.person_outline, isAr ? 'حسابي' : 'Profile', 4),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCenterNavItem(bool isAr) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AddAdScreen()),
+        );
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.add, color: Theme.of(context).primaryColor, size: 28),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            isAr ? 'أضف سيارة' : 'Add Car',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -229,12 +235,17 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: isSelected ? const Color(0xFF1A73E8) : Colors.grey),
+          Icon(
+            icon,
+            color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.6),
+            size: 26,
+          ),
+          const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
-              color: isSelected ? const Color(0xFF1A73E8) : Colors.grey,
-              fontSize: 12,
+              color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.6),
+              fontSize: 11,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
@@ -264,7 +275,7 @@ class _HomePageState extends State<HomePage> {
                   height: 45,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0xFF1A73E8), width: 1.5),
+                    border: Border.all(color: Theme.of(context).primaryColor, width: 1.5),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
@@ -429,7 +440,7 @@ class _HomePageState extends State<HomePage> {
                             ElevatedButton(
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF00D2A0),
+                                backgroundColor: Theme.of(context).primaryColor,
                                 foregroundColor: Colors.white,
                                 elevation: 0,
                                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -463,7 +474,7 @@ class _HomePageState extends State<HomePage> {
       height: 8,
       width: _currentPage == index ? 24 : 8,
       decoration: BoxDecoration(
-        color: _currentPage == index ? const Color(0xFF1A73E8) : Colors.grey.withValues(alpha: 0.3),
+        color: _currentPage == index ? Theme.of(context).primaryColor : Colors.grey.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(4),
       ),
     );
@@ -545,7 +556,7 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {},
           child: Text(
             isAr ? 'عرض الكل' : 'See All',
-            style: const TextStyle(color: Color(0xFF1A73E8)),
+            style: TextStyle(color: Theme.of(context).primaryColor),
           ),
         ),
       ],
@@ -650,7 +661,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 4),
                 Text(details, style: const TextStyle(color: Colors.grey, fontSize: 12)),
                 const SizedBox(height: 8),
-                Text(price, style: const TextStyle(color: Color(0xFF1A73E8), fontWeight: FontWeight.bold, fontSize: 16)),
+                Text(price, style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
           ),
@@ -683,4 +694,37 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  Widget _buildPlaceholder(String title, IconData icon, bool isDark, bool isAr) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 80,
+            color: Colors.grey.withValues(alpha: 0.5),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            isAr ? 'قريباً' : 'Coming Soon',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white70 : Colors.black54,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            isAr ? 'هذه الميزة ستكون متوفرة قريباً' : 'This feature will be available soon',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
+

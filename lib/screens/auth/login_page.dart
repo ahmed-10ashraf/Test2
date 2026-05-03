@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'register_page.dart';
+import 'account_selection_page.dart';
 import '../home_page/home_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -19,16 +19,16 @@ class LoginPage extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 60),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFF1A73E8),
-                    Color(0xFF00D2A0),
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary,
                   ],
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
                 ),
@@ -44,9 +44,9 @@ class LoginPage extends StatelessWidget {
                       letterSpacing: 2,
                     ),
                   ),
-                  Text(
-                    isAr ? 'اتصالك الذكي لكل احتياجات السيارات' : 'Your Smart Connection to Every Car Need',
-                    style: const TextStyle(
+                  const Text(
+                    'Your Smart Connection to Every Car Need',
+                    style: TextStyle(
                       fontSize: 14,
                       color: Colors.white70,
                     ),
@@ -73,16 +73,16 @@ class LoginPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    isAr ? 'مرحباً بعودتك' : 'Welcome back',
+                    'Welcome back',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: isDark ? Colors.white : Colors.black87,
                     ),
                   ),
-                  Text(
-                    isAr ? 'سجل دخولك للمتابعة' : 'Sign in to continue',
-                    style: const TextStyle(
+                  const Text(
+                    'Sign in to continue',
+                    style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
                     ),
@@ -97,7 +97,7 @@ class LoginPage extends StatelessWidget {
                           onPressed: () {},
                           icon: Icon(Icons.g_mobiledata, color: isDark ? Colors.white : Colors.black),
                           label: Text(
-                            isAr ? 'جوجل' : 'Google',
+                            'Google',
                             style: TextStyle(color: isDark ? Colors.white : Colors.black),
                           ),
                           style: OutlinedButton.styleFrom(
@@ -113,7 +113,7 @@ class LoginPage extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(Icons.facebook, color: Colors.blue),
                           label: Text(
-                            isAr ? 'فيسبوك' : 'Facebook',
+                            'Facebook',
                             style: TextStyle(color: isDark ? Colors.white : Colors.black),
                           ),
                           style: OutlinedButton.styleFrom(
@@ -130,11 +130,11 @@ class LoginPage extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(child: Divider(color: isDark ? Colors.grey.shade800 : Colors.grey.shade300)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          isAr ? 'أو تابع بالبريد الإلكتروني' : 'or continue with email',
-                          style: const TextStyle(color: Colors.grey, fontSize: 12),
+                          'or continue with email',
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
                         ),
                       ),
                       Expanded(child: Divider(color: isDark ? Colors.grey.shade800 : Colors.grey.shade300)),
@@ -144,7 +144,7 @@ class LoginPage extends StatelessWidget {
 
                   // Email Field
                   Text(
-                    isAr ? 'البريد أو الهاتف' : 'Email or Phone',
+                    'Email or Phone',
                     style: TextStyle(fontWeight: FontWeight.w500, color: isDark ? Colors.white : Colors.black87),
                   ),
                   const SizedBox(height: 8),
@@ -167,7 +167,7 @@ class LoginPage extends StatelessWidget {
 
                   // Password Field
                   Text(
-                    isAr ? 'كلمة المرور' : 'Password',
+                    'Password',
                     style: TextStyle(fontWeight: FontWeight.w500, color: isDark ? Colors.white : Colors.black87),
                   ),
                   const SizedBox(height: 8),
@@ -192,8 +192,8 @@ class LoginPage extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        isAr ? 'نسيت كلمة المرور؟' : 'Forgot password?',
-                        style: const TextStyle(color: Colors.blue),
+                        'Forgot password?',
+                        style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
                     ),
                   ),
@@ -212,12 +212,12 @@ class LoginPage extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1A73E8),
+                        backgroundColor: Theme.of(context).primaryColor,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                       ),
-                      child: Text(
-                        isAr ? 'تسجيل الدخول' : 'Sign In',
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                      child: const Text(
+                        'Sign In',
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
                   ),
@@ -229,19 +229,19 @@ class LoginPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        isAr ? 'ليس لديك حساب؟ ' : 'No account? ',
+                        'No account? ',
                         style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
                       ),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const RegisterPage()),
+                            MaterialPageRoute(builder: (context) => const AccountSelectionPage()),
                           );
                         },
                         child: Text(
-                          isAr ? 'سجل الآن' : 'Register',
-                          style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                          'Register',
+                          style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -249,10 +249,15 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   Center(
                     child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        isAr ? 'تصفح كضيف ←' : 'Browse as Guest →',
-                        style: const TextStyle(color: Colors.blue),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HomePage()),
+                        );
+                      },
+                      child: const Text(
+                        'Browse as Guest →',
+                        style: TextStyle(color: Color(0xFF1E88E5)),
                       ),
                     ),
                   ),
@@ -265,3 +270,4 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+

@@ -69,7 +69,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
       padding: const EdgeInsets.only(top: 60, bottom: 30, left: 20, right: 20),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF0D47A1), Color(0xFF1976D2)],
+          colors: [Color(0xFF1565C0), Color(0xFF1976D2)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -196,7 +196,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
       child: TabBar(
         controller: _tabController,
         indicator: BoxDecoration(
-          color: const Color(0xFF1A73E8),
+          color: const Color(0xFF1565C0),
           borderRadius: BorderRadius.circular(10),
         ),
         indicatorSize: TabBarIndicatorSize.tab,
@@ -415,11 +415,11 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
     String? badgeText,
   }) {
     Color borderColor = Colors.transparent;
-    Color buttonColor = const Color(0xFF1A73E8);
+    Color buttonColor = const Color(0xFF1565C0);
     Color badgeColor = Colors.orange;
 
     if (isPopular) {
-      borderColor = const Color(0xFF1A73E8);
+      borderColor = const Color(0xFF1565C0);
       badgeColor = const Color(0xFF0D47A1);
     } else if (isPremium) {
       borderColor = Colors.orange.withValues(alpha: 0.5);
@@ -528,7 +528,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
                               ),
                               child: Text(
                                 feature.text.split('(')[1].replaceAll(')', ''),
-                                style: const TextStyle(color: Color(0xFF1A73E8), fontSize: 10, fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: Color(0xFF1565C0), fontSize: 10, fontWeight: FontWeight.bold),
                               ),
                             ),
                         ],
@@ -543,15 +543,15 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
                     style: ElevatedButton.styleFrom(
                       backgroundColor: !isPopular && !isPremium 
                         ? (isDark ? Colors.transparent : Colors.white)
-                        : (isPopular ? const Color(0xFF0D47A1) : buttonColor),
+                        : (isPopular ? const Color(0xFF1565C0) : buttonColor),
                       foregroundColor: !isPopular && !isPremium 
-                        ? const Color(0xFF1A73E8) 
+                        ? const Color(0xFF1565C0) 
                         : Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: !isPopular && !isPremium 
-                          ? BorderSide(color: const Color(0xFF1A73E8).withValues(alpha: 0.5))
+                          ? BorderSide(color: const Color(0xFF1565C0).withValues(alpha: 0.5))
                           : BorderSide.none,
                       ),
                     ),
@@ -576,3 +576,4 @@ class PlanFeature {
 
   PlanFeature(this.text, this.isActive);
 }
+

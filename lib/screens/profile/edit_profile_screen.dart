@@ -125,7 +125,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           height: 120,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xFF1A73E8), width: 3),
+                            border: Border.all(color: const Color(0xFF1565C0), width: 3),
                             color: isDark ? Colors.grey[900] : Colors.grey[200],
                           ),
                           child: ClipRRect(
@@ -141,7 +141,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: GestureDetector(
                             onTap: () => _showImageSourceActionSheet(context, isAr),
                             child: CircleAvatar(
-                              backgroundColor: const Color(0xFF1A73E8),
+                              backgroundColor: const Color(0xFF1565C0),
                               radius: 18,
                               child: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
                             ),
@@ -220,7 +220,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1A73E8),
+                          backgroundColor: const Color(0xFF1565C0),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -274,7 +274,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           textAlign: isAr ? TextAlign.right : TextAlign.left,
           style: TextStyle(color: isDark ? Colors.white : Colors.black87),
           decoration: InputDecoration(
-            prefixIcon: Icon(icon, color: const Color(0xFF1A73E8)),
+            prefixIcon: Icon(icon, color: const Color(0xFF1565C0)),
             suffixIcon: suffixIcon,
             filled: true,
             fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
@@ -288,7 +288,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: const BorderSide(color: Color(0xFF1A73E8), width: 2),
+              borderSide: const BorderSide(color: Color(0xFF1565C0), width: 2),
             ),
           ),
           validator: (value) {
@@ -302,3 +302,4 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 }
+
