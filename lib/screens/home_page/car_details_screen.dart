@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test2/main.dart';
 import 'package:test2/models/car_ad.dart';
 
 class CarDetailsScreen extends StatelessWidget {
@@ -10,35 +11,42 @@ class CarDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _buildSliverAppBar(context, isDark),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(context, isDark),
-                  const SizedBox(height: 25),
-                  _buildSpecifications(context, isDark),
-                  const SizedBox(height: 25),
-                  _buildDescription(isDark),
-                  const SizedBox(height: 25),
-                  _buildSellerInfo(context, isDark),
-                  const SizedBox(height: 100),
-                ],
+    return ValueListenableBuilder<Locale>(
+      valueListenable: localeNotifier,
+      builder: (context, locale, _) {
+        final isAr = locale.languageCode == 'ar';
+        
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              _buildSliverAppBar(context, isDark, isAr),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(context, isAr, isDark),
+                      const SizedBox(height: 25),
+                      _buildSpecifications(context, isAr, isDark),
+                      const SizedBox(height: 25),
+                      _buildDescription(isAr, isDark),
+                      const SizedBox(height: 25),
+                      _buildSellerInfo(context, isAr, isDark),
+                      const SizedBox(height: 100),
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-      bottomSheet: _buildBottomAction(isDark, context),
+          bottomSheet: _buildBottomAction(isAr, isDark, context),
+        );
+      },
     );
   }
 
-  Widget _buildSliverAppBar(BuildContext context, bool isDark) {
+  Widget _buildSliverAppBar(BuildContext context, bool isDark, bool isAr) {
     return SliverAppBar(
       expandedHeight: 300,
       pinned: true,
@@ -47,7 +55,7 @@ class CarDetailsScreen extends StatelessWidget {
         icon: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             shape: BoxShape.circle,
           ),
           child: const Icon(Icons.arrow_back, color: Colors.white),
@@ -59,7 +67,7 @@ class CarDetailsScreen extends StatelessWidget {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.favorite_border, color: Colors.white),
@@ -70,7 +78,7 @@ class CarDetailsScreen extends StatelessWidget {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.share, color: Colors.white),
@@ -87,7 +95,7 @@ class CarDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context, bool isDark) {
+  Widget _buildHeader(BuildContext context, bool isAr, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -96,7 +104,7 @@ class CarDetailsScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                car.titleEn,
+                isAr ? car.titleAr : car.titleEn,
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -118,7 +126,7 @@ class CarDetailsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          car.priceEn,
+          isAr ? car.priceAr : car.priceEn,
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w900,
@@ -126,20 +134,20 @@ class CarDetailsScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        const Row(
+        Row(
           children: [
-            Icon(Icons.location_on_outlined, size: 16, color: Colors.grey),
-            SizedBox(width: 4),
+            const Icon(Icons.location_on_outlined, size: 16, color: Colors.grey),
+            const SizedBox(width: 4),
             Text(
-              'Cairo, Egypt',
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              isAr ? 'القاهرة، مصر' : 'Cairo, Egypt',
+              style: const TextStyle(color: Colors.grey, fontSize: 14),
             ),
-            SizedBox(width: 15),
-            Icon(Icons.access_time, size: 16, color: Colors.grey),
-            SizedBox(width: 4),
+            const SizedBox(width: 15),
+            const Icon(Icons.access_time, size: 16, color: Colors.grey),
+            const SizedBox(width: 4),
             Text(
-              '2 days ago',
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              isAr ? 'منذ يومين' : '2 days ago',
+              style: const TextStyle(color: Colors.grey, fontSize: 14),
             ),
           ],
         ),
@@ -147,12 +155,12 @@ class CarDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSpecifications(BuildContext context, bool isDark) {
+  Widget _buildSpecifications(BuildContext context, bool isAr, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Specifications',
+          isAr ? 'المواصفات' : 'Specifications',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -168,12 +176,12 @@ class CarDetailsScreen extends StatelessWidget {
           crossAxisSpacing: 12,
           childAspectRatio: 2.5,
           children: [
-            _buildSpecItem(context, Icons.speed, 'KM', '0', isDark),
-            _buildSpecItem(context, Icons.calendar_today, 'Year', '2024', isDark),
-            _buildSpecItem(context, Icons.settings, 'Transmission', 'Auto', isDark),
-            _buildSpecItem(context, Icons.local_gas_station, 'Fuel', 'Petrol', isDark),
-            _buildSpecItem(context, Icons.color_lens, 'Color', 'White', isDark),
-            _buildSpecItem(context, Icons.settings_suggest_outlined, 'Engine', '1600 CC', isDark),
+            _buildSpecItem(context, Icons.speed, isAr ? 'كم' : 'KM', '0', isDark),
+            _buildSpecItem(context, Icons.calendar_today, isAr ? 'السنة' : 'Year', '2024', isDark),
+            _buildSpecItem(context, Icons.settings, isAr ? 'ناقل الحركة' : 'Transmission', isAr ? 'أوتوماتيك' : 'Auto', isDark),
+            _buildSpecItem(context, Icons.local_gas_station, isAr ? 'الوقود' : 'Fuel', isAr ? 'بنزين' : 'Petrol', isDark),
+            _buildSpecItem(context, Icons.color_lens, isAr ? 'اللون' : 'Color', isAr ? 'أبيض' : 'White', isDark),
+            _buildSpecItem(context, Icons.settings_suggest_outlined, isAr ? 'المحرك' : 'Engine', '1600 CC', isDark),
           ],
         ),
       ],
@@ -184,7 +192,7 @@ class CarDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade50,
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: isDark ? Colors.white10 : Colors.grey.shade200),
       ),
@@ -215,12 +223,12 @@ class CarDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDescription(bool isDark) {
+  Widget _buildDescription(bool isAr, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Description',
+          isAr ? 'الوصف' : 'Description',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -229,7 +237,7 @@ class CarDetailsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          car.detailsEn,
+          isAr ? car.detailsAr : car.detailsEn,
           style: TextStyle(
             fontSize: 14,
             height: 1.5,
@@ -238,7 +246,9 @@ class CarDetailsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          'This is a sample text for a detailed car description. All features and additions to the car are displayed here.',
+          isAr 
+            ? 'هذا النص هو مثال لوصف السيارة بالتفصيل. يتم عرض كافة المميزات والاضافات الموجودة في السيارة هنا.'
+            : 'This is a sample text for a detailed car description. All features and additions to the car are displayed here.',
           style: TextStyle(
             fontSize: 14,
             height: 1.5,
@@ -249,11 +259,11 @@ class CarDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSellerInfo(BuildContext context, bool isDark) {
+  Widget _buildSellerInfo(BuildContext context, bool isAr, bool isDark) {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade50,
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: isDark ? Colors.white10 : Colors.grey.shade200),
       ),
@@ -261,7 +271,7 @@ class CarDetailsScreen extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 25,
-            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+            backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
             child: Icon(Icons.person, color: Theme.of(context).primaryColor),
           ),
           const SizedBox(width: 15),
@@ -270,37 +280,37 @@ class CarDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Mohamed Ahmed',
+                  isAr ? 'محمد أحمد' : 'Mohamed Ahmed',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                     color: isDark ? Colors.white : Colors.black87,
                   ),
                 ),
-                const Text(
-                  'Verified Seller',
-                  style: TextStyle(color: Colors.green, fontSize: 12, fontWeight: FontWeight.w600),
+                Text(
+                  isAr ? 'بائع موثوق' : 'Verified Seller',
+                  style: const TextStyle(color: Colors.green, fontSize: 12, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
           ),
           TextButton(
             onPressed: () {},
-            child: Text('View Profile', style: TextStyle(color: Theme.of(context).primaryColor)),
+            child: Text(isAr ? 'عرض الملف' : 'View Profile', style: TextStyle(color: Theme.of(context).primaryColor)),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBottomAction(bool isDark, BuildContext context) {
+  Widget _buildBottomAction(bool isAr, bool isDark, BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 15, 20, 25),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -312,7 +322,7 @@ class CarDetailsScreen extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () {},
               icon: const Icon(Icons.smart_toy_outlined),
-              label: const Text('ChatBot'),
+              label: Text(isAr ? 'بوت الدردشة' : 'ChatBot'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: isDark ? Colors.white10 : const Color(0xFFF0F2F5),
                 foregroundColor: isDark ? Colors.white : Colors.black87,
@@ -327,12 +337,12 @@ class CarDetailsScreen extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () {},
               icon: const Icon(Icons.phone_outlined),
-              label: const Text('Call'),
+              label: Text(isAr ? 'اتصال' : 'Call'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
                 elevation: 4,
-                shadowColor: Theme.of(context).primaryColor.withOpacity(0.4),
+                shadowColor: Theme.of(context).primaryColor.withValues(alpha: 0.4),
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
               ),
