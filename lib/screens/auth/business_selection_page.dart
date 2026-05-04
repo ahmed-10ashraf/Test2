@@ -28,13 +28,13 @@ class _BusinessSelectionPageState extends State<BusinessSelectionPage> {
       'id': 'parts',
       'title': 'Spare Parts',
       'icon': Icons.settings_outlined,
-      'color': Colors.orange,
+      'color': const Color(0xFF1E88E5),
     },
     {
       'id': 'maintenance',
       'title': 'Maintenance',
       'icon': Icons.build_outlined,
-      'color': Colors.orange,
+      'color': const Color(0xFF1E88E5),
     },
   ];
 
@@ -84,12 +84,12 @@ class _BusinessSelectionPageState extends State<BusinessSelectionPage> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(
-                          color: isSelected ? activity['color'] : Colors.grey.withOpacity(0.1),
+                          color: isSelected ? activity['color'] : Colors.grey.withValues(alpha: 0.1),
                           width: isSelected ? 2 : 1,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
+                            color: Colors.black.withValues(alpha: 0.03),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
                           ),
@@ -142,7 +142,7 @@ class _BusinessSelectionPageState extends State<BusinessSelectionPage> {
                         }
                       },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF64B5F6),
+                  backgroundColor: const Color(0xFF1E88E5),
                   disabledBackgroundColor: Colors.grey.shade300,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),

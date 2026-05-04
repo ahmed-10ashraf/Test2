@@ -9,136 +9,101 @@ class UserRegisterPage extends StatefulWidget {
 }
 
 class _UserRegisterPageState extends State<UserRegisterPage> {
+  final Color primaryBlue = const Color(0xFF1E88E5);
+  final Color darkBlue = const Color(0xFF0D47A1);
+  final Color background = const Color(0xFFF8FAFF);
+
   bool _agreeToTerms = false;
   String? _selectedCity;
   final List<String> _cities = ['Cairo', 'Giza', 'Alexandria', 'Mansoura', 'Tanta', 'Suez'];
 
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFF),
+      backgroundColor: background,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black, size: 20),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
+        centerTitle: true,
+        title: Text(
+          'Create Account',
+          style: TextStyle(color: darkBlue, fontWeight: FontWeight.bold, fontSize: 22),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new, color: darkBlue, size: 24),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Create Account',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1A237E),
-              ),
-            ),
-            const SizedBox(height: 8),
             Text(
               'Join thousands of car buyers & sellers in Egypt',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 color: Colors.grey.shade600,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 32),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildSocialButton(
-                    icon: 'assets/images/google_icon.png', // Assuming asset exists or use icon
-                    label: 'Google',
-                    isGoogle: true,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildSocialButton(
-                    icon: 'assets/images/facebook_icon.png',
-                    label: 'Facebook',
-                    isGoogle: false,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(child: Divider(color: Colors.grey.shade300)),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'or fill in details',
-                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
-                  ),
-                ),
-                Expanded(child: Divider(color: Colors.grey.shade300)),
-              ],
-            ),
-            const SizedBox(height: 24),
-            _buildInputField(label: 'Full Name', hint: 'Ahmed Mohamed', icon: Icons.person_outline),
-            _buildInputField(label: 'Phone Number', hint: '+20 1X XXX XXXX', icon: Icons.phone_android_outlined),
-            _buildInputField(label: 'Email', hint: 'email@example.com', icon: Icons.email_outlined),
-            _buildInputField(label: 'Password', hint: 'Min. 8 characters', icon: Icons.lock_outline, isPassword: true),
+            const SizedBox(height: 35),
+            _buildSectionHeader('1', 'Personal Information', Icons.person_outline),
+            _buildInputField('Full Name', 'Ahmed Mohamed', _nameController, Icons.person_outline),
+            _buildInputField('Phone Number', '05xxxxxxxx', _phoneController, Icons.phone_android_outlined),
+            _buildInputField('Email Address', 'email@example.com', _emailController, Icons.email_outlined),
+            _buildInputField('Password', 'Min. 8 characters', _passwordController, Icons.lock_outline, isPassword: true),
             
-            const Text(
-              'City',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1A237E)),
-            ),
-            const SizedBox(height: 8),
+            _buildLabel('City'),
+            const SizedBox(height: 15),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade200),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.grey.shade300, width: 2),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  hint: const Text('Select your city'),
+                  hint: const Text('Select your city', style: TextStyle(fontSize: 18)),
                   value: _selectedCity,
+                  icon: Icon(Icons.keyboard_arrow_down, color: primaryBlue, size: 30),
                   items: _cities.map((city) {
-                    return DropdownMenuItem(value: city, child: Text(city));
+                    return DropdownMenuItem(value: city, child: Text(city, style: const TextStyle(fontSize: 18)));
                   }).toList(),
                   onChanged: (val) => setState(() => _selectedCity = val),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 25),
             Row(
               children: [
                 Checkbox(
                   value: _agreeToTerms,
                   onChanged: (val) => setState(() => _agreeToTerms = val ?? false),
-                  activeColor: const Color(0xFF2979FF),
+                  activeColor: primaryBlue,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                 ),
                 Expanded(
                   child: Text.rich(
                     TextSpan(
                       text: 'I agree to the ',
-                      style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                      children: const [
+                      style: TextStyle(fontSize: 14, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+                      children: [
                         TextSpan(
                           text: 'Terms of Service',
-                          style: TextStyle(color: Color(0xFF2979FF), fontWeight: FontWeight.bold),
+                          style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
                         ),
-                        TextSpan(text: ' and '),
+                        const TextSpan(text: ' and '),
                         TextSpan(
                           text: 'Privacy Policy',
-                          style: TextStyle(color: Color(0xFF2979FF), fontWeight: FontWeight.bold),
+                          style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -146,43 +111,22 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                    (route) => false,
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2979FF),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-                  elevation: 0,
-                ),
-                child: const Text(
-                  'Create Account',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 40),
+            _buildSubmitButton(),
+            const SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Already have an account? ', style: TextStyle(color: Colors.grey.shade600)),
+                Text('Already have an account? ', style: TextStyle(color: Colors.grey.shade600, fontSize: 16)),
                 GestureDetector(
                   onTap: () => Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                     (route) => false,
                   ),
-                  child: const Text(
+                  child: Text(
                     'Login',
-                    style: TextStyle(color: Color(0xFF2979FF), fontWeight: FontWeight.bold),
+                    style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
               ],
@@ -194,56 +138,84 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
     );
   }
 
-  Widget _buildSocialButton({required String icon, required String label, required bool isGoogle}) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
+  Widget _buildLabel(String text) {
+    return Text(text, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: darkBlue));
+  }
+
+  Widget _buildSectionHeader(String step, String title, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(isGoogle ? Icons.g_mobiledata : Icons.facebook, color: isGoogle ? Colors.red : Colors.blue),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: primaryBlue.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
+            child: Icon(icon, color: primaryBlue, size: 32),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: darkBlue),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInputField({required String label, required String hint, required IconData icon, bool isPassword = false}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1A237E)),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade200),
+  Widget _buildInputField(String label, String hint, TextEditingController controller, IconData icon, {bool isPassword = false}) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 25),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.grey.shade300, width: 2),
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: isPassword,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: primaryBlue, fontSize: 16, fontWeight: FontWeight.bold),
+          hintText: hint,
+          prefixIcon: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Icon(icon, color: primaryBlue, size: 28),
           ),
-          child: TextField(
-            obscureText: isPassword,
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-              prefixIcon: Icon(icon, color: const Color(0xFF1A237E).withOpacity(0.7)),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 15),
-            ),
-          ),
+          hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 16),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          border: InputBorder.none,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 65,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+            (route) => false,
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryBlue,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 0,
+        ),
+        child: const Text(
+          'Create Account',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+      ),
     );
   }
 }
+

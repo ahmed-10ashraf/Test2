@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'business_selection_page.dart';
-import 'register_page.dart';
 import 'user_register_page.dart';
 
 class AccountSelectionPage extends StatelessWidget {
@@ -35,7 +34,7 @@ class AccountSelectionPage extends StatelessWidget {
               width: 50,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.orange,
+                color: const Color(0xFF1565C0),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -69,7 +68,7 @@ class AccountSelectionPage extends StatelessWidget {
                         title: 'Dealer',
                         description: 'Dedicated account for business owners to manage and grow their dealership.',
                         icon: Icons.storefront_rounded,
-                        color: Colors.orange,
+                        color: const Color(0xFF1565C0),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -101,10 +100,10 @@ class AccountSelectionPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3), width: 1),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.05),
+            color: color.withValues(alpha: 0.05),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
