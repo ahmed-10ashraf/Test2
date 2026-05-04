@@ -6,9 +6,9 @@ import 'package:test2/data/dummy_data.dart';
 import '../profile/profile_screen.dart';
 import '../profile/favorites_screen.dart';
 import '../notifications/notifications_screen.dart';
-import '../services/services_list_screen.dart';
 import 'car_details_screen.dart';
 import '../ads/add_ad_screen.dart';
+import 'services_list_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -466,11 +466,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildTopBrandsSection(bool isDark) {
     final brands = [
-      {'name': 'BMW', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png'},
-      {'name': 'Mercedes', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo_2010.svg/1024px-Mercedes-Logo_2010.svg.png'},
-      {'name': 'Tesla', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Tesla_Motors.svg/1024px-Tesla_Motors.svg.png'},
-      {'name': 'Audi', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Audi-Logo_2016.svg/1024px-Audi-Logo_2016.svg.png'},
-      {'name': 'Toyota', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Toyota_EU.svg/1024px-Toyota_EU.svg.png'},
+      {'name': 'BMW', 'logo': 'assets/images/bmw.jpeg'},
+      {'name': 'Mercedes', 'logo': 'assets/images/mercedes.jpg'},
+      {'name': 'Tesla', 'logo': 'assets/images/tesla.jpg'},
+      {'name': 'Audi', 'logo': 'assets/images/audi.jpeg'},
+      {'name': 'Toyota', 'logo': 'assets/images/toyota.jpg'},
     ];
 
     return Column(
@@ -498,7 +498,7 @@ class _HomePageState extends State<HomePage> {
                         BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05), blurRadius: 5),
                       ],
                     ),
-                    child: Image.network(brands[index]['logo']!),
+                    child: Image.asset(brands[index]['logo']!, fit: BoxFit.contain),
                   ),
                   const SizedBox(height: 5),
                   Text(
