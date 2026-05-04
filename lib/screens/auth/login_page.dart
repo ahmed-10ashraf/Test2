@@ -7,7 +7,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAr = Localizations.localeOf(context).languageCode == 'ar';
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -24,8 +23,8 @@ class LoginPage extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.secondary,
+                    const Color(0xFF1E88E5),
+                    const Color(0xFF1976D2),
                   ],
                 ),
                 borderRadius: const BorderRadius.only(
@@ -188,12 +187,12 @@ class LoginPage extends StatelessWidget {
                   ),
 
                   Align(
-                    alignment: isAr ? Alignment.centerLeft : Alignment.centerRight,
+                    alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {},
-                      child: Text(
+                      child: const Text(
                         'Forgot password?',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
+                        style: TextStyle(color: Color(0xFF1E88E5)),
                       ),
                     ),
                   ),
@@ -212,7 +211,7 @@ class LoginPage extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
+                        backgroundColor: const Color(0xFF1E88E5),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                       ),
                       child: const Text(
@@ -239,9 +238,9 @@ class LoginPage extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => const AccountSelectionPage()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           'Register',
-                          style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Color(0xFF1E88E5), fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

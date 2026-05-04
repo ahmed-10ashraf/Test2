@@ -15,7 +15,18 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
 
   bool _agreeToTerms = false;
   String? _selectedCity;
-  final List<String> _cities = ['Cairo', 'Giza', 'Alexandria', 'Mansoura', 'Tanta', 'Suez'];
+  final List<String> _cities = [
+    'Cairo',
+    'Giza',
+    'Alexandria',
+    'Mansoura',
+    'Tanta',
+    'Suez',
+    'Hurghada',
+    'Sharm El Sheikh',
+    'Luxor',
+    'Aswan'
+  ];
 
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -59,14 +70,14 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
             _buildInputField('Email Address', 'email@example.com', _emailController, Icons.email_outlined),
             _buildInputField('Password', 'Min. 8 characters', _passwordController, Icons.lock_outline, isPassword: true),
             
-            _buildLabel('City'),
+            _buildLabel('Select City'),
             const SizedBox(height: 15),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.grey.shade300, width: 2),
+                border: Border.all(color: primaryBlue.withValues(alpha: 0.2), width: 2),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
@@ -170,7 +181,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade300, width: 2),
+        border: Border.all(color: primaryBlue.withValues(alpha: 0.1), width: 2),
       ),
       child: TextField(
         controller: controller,

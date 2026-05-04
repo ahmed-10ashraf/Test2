@@ -217,7 +217,7 @@ class _TowingRegisterPageState extends State<TowingRegisterPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Colors.grey.shade300, width: 2),
+              border: Border.all(color: primaryBlue.withValues(alpha: 0.1), width: 2),
             ),
             child: Row(
               children: [
@@ -251,7 +251,7 @@ class _TowingRegisterPageState extends State<TowingRegisterPage> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.grey.shade300, width: 2),
+            border: Border.all(color: primaryBlue.withValues(alpha: 0.1), width: 2),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
@@ -310,7 +310,7 @@ class _TowingRegisterPageState extends State<TowingRegisterPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade300, width: 2),
+        border: Border.all(color: primaryBlue.withValues(alpha: 0.1), width: 2),
       ),
       child: TextField(
         controller: controller,

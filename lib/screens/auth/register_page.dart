@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'login_page.dart';
-import '../home_page/home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -374,8 +373,9 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             VerticalDivider(color: primaryBlue.withValues(alpha: 0.08), thickness: 1.5, width: 1, indent: 12, endIndent: 12),
             Expanded(
-              child: Directionality(
-                textDirection: TextDirection.ltr,
+              child: RadioGroup<String>(
+                groupValue: _carType,
+                onChanged: (val) => setState(() => _carType = val!),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -403,9 +403,6 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             Radio<String>(
               value: value,
-              groupValue: _carType,
-              activeColor: primaryBlue,
-              onChanged: (val) => setState(() => _carType = val!),
               visualDensity: VisualDensity.compact,
             ),
             Text(

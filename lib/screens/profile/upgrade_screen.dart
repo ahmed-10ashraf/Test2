@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test2/main.dart';
 
 class UpgradeScreen extends StatefulWidget {
   const UpgradeScreen({super.key});
@@ -14,7 +13,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 2); // Start with Showrooms (Arabic RTL usually)
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
   }
 
   @override
@@ -27,43 +26,36 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return ValueListenableBuilder<Locale>(
-      valueListenable: localeNotifier,
-      builder: (context, locale, _) {
-        final isAr = locale.languageCode == 'ar';
-
-        return Scaffold(
-          backgroundColor: isDark ? Colors.black : const Color(0xFFF5F7FB),
-          body: Column(
-            children: [
-              _buildHeader(context, isAr),
-              Expanded(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    _buildTabs(isAr, isDark),
-                    Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          _buildCompaniesList(isAr, isDark),
-                          _buildServicesList(isAr, isDark),
-                          _buildShowroomsList(isAr, isDark),
-                        ],
-                      ),
-                    ),
-                  ],
+    return Scaffold(
+      backgroundColor: isDark ? Colors.black : const Color(0xFFF5F7FB),
+      body: Column(
+        children: [
+          _buildHeader(context),
+          Expanded(
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                _buildTabs(isDark),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      _buildCompaniesList(isDark),
+                      _buildServicesList(isDark),
+                      _buildShowroomsList(isDark),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, bool isAr) {
+  Widget _buildHeader(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 60, bottom: 30, left: 20, right: 20),
@@ -83,15 +75,6 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(width: 40),
-              Text(
-                isAr ? 'باقات الاشتراك' : 'Subscription Plans',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: Container(
@@ -100,9 +83,18 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
                     color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                  child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
                 ),
               ),
+              const Text(
+                'Subscription Plans',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(width: 40),
             ],
           ),
           const SizedBox(height: 25),
@@ -114,16 +106,16 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
               IconData icon = Icons.settings;
 
               if (_tabController.index == 2) {
-                title = isAr ? 'اختار الباقة المناسبة' : 'Choose the right plan';
-                subtitle = isAr ? 'وصل معرضك لآلاف المشترين' : 'Reach thousands of buyers';
+                title = 'Choose the right plan';
+                subtitle = 'Reach thousands of buyers';
                 icon = Icons.settings_suggest_outlined;
               } else if (_tabController.index == 1) {
-                title = isAr ? 'باقات مزودي الخدمات' : 'Service Provider Plans';
-                subtitle = isAr ? 'ونش، صيانة، أفلام حماية' : 'Towing, Maintenance, Protection';
+                title = 'Service Provider Plans';
+                subtitle = 'Towing, Maintenance, Protection';
                 icon = Icons.build_rounded;
               } else {
-                title = isAr ? 'باقات الشركات والمؤسسات' : 'Corporate & Institution Plans';
-                subtitle = isAr ? 'تأمين، تقسيط، توكيلات رسمية' : 'Insurance, Installment, Agencies';
+                title = 'Corporate & Institution Plans';
+                subtitle = 'Insurance, Installment, Agencies';
                 icon = Icons.business_rounded;
               }
 
@@ -177,7 +169,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
     );
   }
 
-  Widget _buildTabs(bool isAr, bool isDark) {
+  Widget _buildTabs(bool isDark) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(5),
@@ -204,198 +196,189 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
         unselectedLabelColor: isDark ? Colors.white70 : Colors.grey,
         labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         dividerColor: Colors.transparent,
-        tabs: [
-          Tab(text: isAr ? 'شركات' : 'Companies'),
-          Tab(text: isAr ? 'خدمات' : 'Services'),
-          Tab(text: isAr ? 'معارض' : 'Showrooms'),
+        tabs: const [
+          Tab(text: 'Companies'),
+          Tab(text: 'Services'),
+          Tab(text: 'Showrooms'),
         ],
       ),
     );
   }
 
-  Widget _buildShowroomsList(bool isAr, bool isDark) {
+  Widget _buildShowroomsList(bool isDark) {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       children: [
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'أساسية' : 'Basic',
-          subtitle: isAr ? 'للمعارض الصغيرة' : 'For small showrooms',
+          title: 'Basic',
+          subtitle: 'For small showrooms',
           price: '500',
           features: [
-            PlanFeature(isAr ? 'إعلانات نشطة (10 إعلان)' : '10 Active Ads', true),
-            PlanFeature(isAr ? 'ظهور عادي في البحث' : 'Normal Search Appearance', true),
-            PlanFeature(isAr ? 'صفحة بروفايل المعرض' : 'Showroom Profile Page', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'معرض موثق' : 'Verified Showroom', false),
-            PlanFeature(isAr ? 'إحصائيات الأداء' : 'Performance Analytics', false),
+            PlanFeature('10 Active Ads', true),
+            PlanFeature('Normal Search Appearance', true),
+            PlanFeature('Showroom Profile Page', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Verified Showroom', false),
+            PlanFeature('Performance Analytics', false),
           ],
-          buttonText: isAr ? 'ابدأ بالأساسيه' : 'Start Basic',
+          buttonText: 'Start Basic',
         ),
         const SizedBox(height: 20),
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'احترافية' : 'Professional',
-          subtitle: isAr ? 'للمعارض المتوسطة' : 'For medium showrooms',
+          title: 'Professional',
+          subtitle: 'For medium showrooms',
           price: '1,200',
           isPopular: true,
-          badgeText: isAr ? 'الأكثر طلباً ⭐' : 'Most Requested ⭐',
+          badgeText: 'Most Requested ⭐',
           features: [
-            PlanFeature(isAr ? 'إعلانات نشطة (30 إعلان)' : '30 Active Ads', true),
-            PlanFeature(isAr ? 'ظهور مميز في البحث' : 'Featured Search Appearance', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'Badge معرض موثق' : 'Verified Badge', true),
-            PlanFeature(isAr ? 'إحصائيات ومشاهدات' : 'Analytics & Views', true),
-            PlanFeature(isAr ? 'أولوية ظهور في النتائج' : 'Search Priority', false),
+            PlanFeature('30 Active Ads', true),
+            PlanFeature('Featured Search Appearance', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Verified Badge', true),
+            PlanFeature('Analytics & Views', true),
+            PlanFeature('Search Priority', false),
           ],
-          buttonText: isAr ? 'اشترك دلوقتي' : 'Subscribe Now',
+          buttonText: 'Subscribe Now',
         ),
         const SizedBox(height: 20),
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'بريميوم' : 'Premium',
-          subtitle: isAr ? 'للمعارض الكبيرة والتوكيلات' : 'For large showrooms & agencies',
+          title: 'Premium',
+          subtitle: 'For large showrooms & agencies',
           price: '2,500',
           isPremium: true,
-          badgeText: isAr ? '👑 بريميوم' : '👑 Premium',
+          badgeText: '👑 Premium',
           features: [
-            PlanFeature(isAr ? 'إعلانات نشطة (غير محدودة)' : 'Unlimited Active Ads', true),
-            PlanFeature(isAr ? 'أول النتائج دائماً' : 'Always Top of Results', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'Badge معرض ذهبي 👑' : 'Golden Verified Badge 👑', true),
-            PlanFeature(isAr ? 'تقرير أداء تفصيلي' : 'Detailed Performance Report', true),
-            PlanFeature(isAr ? 'إشعارات للعملاء المهتمين 🔔' : 'Interested Customer Notifications 🔔', true),
+            PlanFeature('Unlimited Active Ads', true),
+            PlanFeature('Always Top of Results', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Golden Verified Badge 👑', true),
+            PlanFeature('Detailed Performance Report', true),
+            PlanFeature('Interested Customer Notifications 🔔', true),
           ],
-          buttonText: isAr ? 'ترقية للبريميوم' : 'Upgrade to Premium',
+          buttonText: 'Upgrade to Premium',
         ),
         const SizedBox(height: 30),
       ],
     );
   }
 
-  Widget _buildServicesList(bool isAr, bool isDark) {
+  Widget _buildServicesList(bool isDark) {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       children: [
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'أساسية' : 'Basic',
-          subtitle: isAr ? 'للخدمات الصغيرة' : 'For small services',
+          title: 'Basic',
+          subtitle: 'For small services',
           price: '300',
           features: [
-            PlanFeature(isAr ? 'ظهور في قائمة الخدمات' : 'Service List Appearance', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'الموقع على الخريطة' : 'Location on Map', true),
-            PlanFeature(isAr ? 'أولوية في نتائج البحث' : 'Search Priority', false),
-            PlanFeature(isAr ? 'خدمة موثقة' : 'Verified Service', false),
-            PlanFeature(isAr ? 'إحصائيات الزيارات' : 'Visit Analytics', false),
+            PlanFeature('Service List Appearance', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Location on Map', true),
+            PlanFeature('Search Priority', false),
+            PlanFeature('Verified Service', false),
+            PlanFeature('Visit Analytics', false),
           ],
-          buttonText: isAr ? 'ابدأ دلوقتي' : 'Start Now',
+          buttonText: 'Start Now',
         ),
         const SizedBox(height: 20),
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'احترافية' : 'Professional',
-          subtitle: isAr ? 'للخدمات المتوسطة' : 'For medium services',
+          title: 'Professional',
+          subtitle: 'For medium services',
           price: '600',
           isPopular: true,
-          badgeText: isAr ? 'الأكثر طلباً ⭐' : 'Most Requested ⭐',
+          badgeText: 'Most Requested ⭐',
           features: [
-            PlanFeature(isAr ? 'ظهور مميز في البحث' : 'Featured Search Appearance', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'الموقع على الخريطة' : 'Location on Map', true),
-            PlanFeature(isAr ? 'Badge خدمة موثقة ✓' : 'Verified Badge ✓', true),
-            PlanFeature(isAr ? 'إحصائيات الزيارات الشهرية' : 'Monthly Visit Analytics', true),
-            PlanFeature(isAr ? 'أولوية قصوى في النتائج' : 'Top Search Priority', false),
+            PlanFeature('Featured Search Appearance', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Location on Map', true),
+            PlanFeature('Verified Badge ✓', true),
+            PlanFeature('Monthly Visit Analytics', true),
+            PlanFeature('Top Search Priority', false),
           ],
-          buttonText: isAr ? 'اشترك دلوقتي' : 'Subscribe Now',
+          buttonText: 'Subscribe Now',
         ),
         const SizedBox(height: 20),
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'بريميوم' : 'Premium',
-          subtitle: isAr ? 'للخدمات الكبيرة والسلاسل' : 'For large services & chains',
+          title: 'Premium',
+          subtitle: 'For large services & chains',
           price: '1,200',
           isPremium: true,
-          badgeText: isAr ? '👑 بريميوم' : '👑 Premium',
+          badgeText: '👑 Premium',
           features: [
-            PlanFeature(isAr ? 'أول النتائج دائماً' : 'Always Top of Results', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'الموقع على الخريطة' : 'Location on Map', true),
-            PlanFeature(isAr ? 'Badge ذهبي موثق 👑' : 'Golden Verified Badge 👑', true),
-            PlanFeature(isAr ? 'تقرير أداء تفصيلي' : 'Detailed Performance Report', true),
-            PlanFeature(isAr ? 'إشعارات للعملاء القريبين 📍' : 'Nearby Customer Notifications 📍', true),
+            PlanFeature('Always Top of Results', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Location on Map', true),
+            PlanFeature('Golden Verified Badge 👑', true),
+            PlanFeature('Detailed Performance Report', true),
+            PlanFeature('Nearby Customer Notifications 📍', true),
           ],
-          buttonText: isAr ? 'ترقية للبريميوم' : 'Upgrade to Premium',
+          buttonText: 'Upgrade to Premium',
         ),
         const SizedBox(height: 30),
       ],
     );
   }
 
-  Widget _buildCompaniesList(bool isAr, bool isDark) {
+  Widget _buildCompaniesList(bool isDark) {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       children: [
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'شريك أساسي' : 'Basic Partner',
-          subtitle: isAr ? 'للشركات الناشئة' : 'For startups',
+          title: 'Basic Partner',
+          subtitle: 'For startups',
           price: '800',
           features: [
-            PlanFeature(isAr ? 'ظهور في قسم الشركات' : 'Company Section Appearance', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'صفحة بروفايل الشركة' : 'Company Profile Page', true),
-            PlanFeature(isAr ? 'شركة موثقة' : 'Verified Company', false),
-            PlanFeature(isAr ? 'أولوية في نتائج البحث' : 'Search Priority', false),
-            PlanFeature(isAr ? 'إحصائيات وتقارير' : 'Analytics & Reports', false),
+            PlanFeature('Company Section Appearance', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Company Profile Page', true),
+            PlanFeature('Verified Company', false),
+            PlanFeature('Search Priority', false),
+            PlanFeature('Analytics & Reports', false),
           ],
-          buttonText: isAr ? 'ابدأ كشريك' : 'Start as Partner',
+          buttonText: 'Start as Partner',
         ),
         const SizedBox(height: 20),
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'شريك مميز' : 'Premium Partner',
-          subtitle: isAr ? 'للشركات المتوسطة' : 'For medium companies',
+          title: 'Premium Partner',
+          subtitle: 'For medium companies',
           price: '1,500',
           isPopular: true,
-          badgeText: isAr ? 'الأكثر طلباً ⭐' : 'Most Requested ⭐',
+          badgeText: 'Most Requested ⭐',
           features: [
-            PlanFeature(isAr ? 'ظهور مميز في البحث' : 'Featured Search Appearance', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'شركة موثقة ✓' : 'Verified Company ✓', true),
-            PlanFeature(isAr ? 'عروض حصرية للمشتركين' : 'Exclusive Subscriber Offers', true),
-            PlanFeature(isAr ? 'إحصائيات شهرية تفصيلية' : 'Detailed Monthly Analytics', true),
-            PlanFeature(isAr ? 'إشعارات للعملاء المهتمين' : 'Interested Customer Notifications', false),
+            PlanFeature('Featured Search Appearance', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Verified Company ✓', true),
+            PlanFeature('Exclusive Subscriber Offers', true),
+            PlanFeature('Detailed Monthly Analytics', true),
+            PlanFeature('Interested Customer Notifications', false),
           ],
-          buttonText: isAr ? 'اشترك دلوقتي' : 'Subscribe Now',
+          buttonText: 'Subscribe Now',
         ),
         const SizedBox(height: 20),
         _buildPlanCard(
-          isAr: isAr,
           isDark: isDark,
-          title: isAr ? 'شريك ذهبي' : 'Golden Partner',
-          subtitle: isAr ? 'للشركات الكبرى والتوكيلات' : 'For major companies & agencies',
+          title: 'Golden Partner',
+          subtitle: 'For major companies & agencies',
           price: '3,000',
           isPremium: true,
-          badgeText: isAr ? '👑 ذهبي' : '👑 Gold',
+          badgeText: '👑 Gold',
           features: [
-            PlanFeature(isAr ? 'أول النتائج دائماً' : 'Always Top of Results', true),
-            PlanFeature(isAr ? 'رقم التليفون ظاهر للعملاء' : 'Phone Number Visible', true),
-            PlanFeature(isAr ? 'Badge ذهبي رسمي 👑' : 'Official Gold Badge 👑', true),
-            PlanFeature(isAr ? 'إشعارات للعملاء المهتمين 🔔' : 'Interested Customer Notifications 🔔', true),
-            PlanFeature(isAr ? 'تقرير أداء تفصيلي شهري' : 'Monthly Performance Report', true),
-            PlanFeature(isAr ? 'مدير حساب مخصص' : 'Dedicated Account Manager', true),
+            PlanFeature('Always Top of Results', true),
+            PlanFeature('Phone Number Visible', true),
+            PlanFeature('Official Gold Badge 👑', true),
+            PlanFeature('Interested Customer Notifications 🔔', true),
+            PlanFeature('Monthly Performance Report', true),
+            PlanFeature('Dedicated Account Manager', true),
           ],
-          buttonText: isAr ? 'ترقية للذهبي' : 'Upgrade to Gold',
+          buttonText: 'Upgrade to Gold',
         ),
         const SizedBox(height: 30),
       ],
@@ -403,7 +386,6 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
   }
 
   Widget _buildPlanCard({
-    required bool isAr,
     required bool isDark,
     required String title,
     required String subtitle,
@@ -489,7 +471,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> with SingleTickerProvider
                           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          isAr ? 'جنيه / شهر' : 'EGP / Month',
+                          'EGP / Month',
                           style: TextStyle(color: Colors.grey[500], fontSize: 12),
                         ),
                       ],

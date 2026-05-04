@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test2/main.dart';
 import 'new_cars_screen.dart';
 
 class ServicesListScreen extends StatelessWidget {
@@ -232,7 +231,7 @@ class ServicesListScreen extends StatelessWidget {
         boxShadow: [
           if (!isDark)
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
               blurRadius: 15,
               offset: const Offset(0, 8),
             )
@@ -285,7 +284,7 @@ class ServicesListScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18),
                     boxShadow: [
                       BoxShadow(
-                        color: iconColor.withOpacity(0.3),
+                        color: iconColor.withValues(alpha: 0.3),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -376,7 +375,7 @@ class ServicesListScreen extends StatelessWidget {
         boxShadow: [
           if (!isDark)
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 10,
               offset: const Offset(0, 4),
             )

@@ -17,7 +17,7 @@ class _MaintenanceRegisterPageState extends State<MaintenanceRegisterPage> {
   
   int _currentStep = 1;
   File? _logoImage;
-  File? _commercialRegisterFile; // Re-adding if needed for logic, though it was replaced by text field in UI
+  // File? _commercialRegisterFile; // Re-adding if needed for logic, though it was replaced by text field in UI
 
   // Controllers Step 1
   final _nameController = TextEditingController();
@@ -60,7 +60,7 @@ class _MaintenanceRegisterPageState extends State<MaintenanceRegisterPage> {
         if (isLogo) {
           _logoImage = File(image.path);
         } else {
-          _commercialRegisterFile = File(image.path);
+          // _commercialRegisterFile = File(image.path);
         }
       });
     }
@@ -220,7 +220,7 @@ class _MaintenanceRegisterPageState extends State<MaintenanceRegisterPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Colors.grey.shade300, width: 2),
+              border: Border.all(color: primaryBlue.withValues(alpha: 0.1), width: 2),
             ),
             child: Row(
               children: [
@@ -254,7 +254,7 @@ class _MaintenanceRegisterPageState extends State<MaintenanceRegisterPage> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.grey.shade300, width: 2),
+            border: Border.all(color: primaryBlue.withValues(alpha: 0.1), width: 2),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
@@ -313,7 +313,7 @@ class _MaintenanceRegisterPageState extends State<MaintenanceRegisterPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade300, width: 2),
+        border: Border.all(color: primaryBlue.withValues(alpha: 0.1), width: 2),
       ),
       child: TextField(
         controller: controller,

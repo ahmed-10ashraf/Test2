@@ -63,7 +63,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  void _showImageSourceActionSheet(BuildContext context, bool isAr) {
+  void _showImageSourceActionSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -74,7 +74,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: [
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: Text(isAr ? 'معرض الصور' : 'Gallery'),
+              title: const Text('Gallery'),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.gallery);
@@ -82,7 +82,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: Text(isAr ? 'الكاميرا' : 'Camera'),
+              title: const Text('Camera'),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.camera);
@@ -98,148 +98,137 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return ValueListenableBuilder<Locale>(
-      valueListenable: localeNotifier,
-      builder: (context, locale, _) {
-        final isAr = locale.languageCode == 'ar';
-
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(isAr ? 'تعديل الملف الشخصي' : 'Edit Profile'),
-            centerTitle: true,
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            foregroundColor: isDark ? Colors.white : Colors.black87,
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: isDark ? Colors.white : Colors.black87,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Stack(
                   children: [
-                    Stack(
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xFF1565C0), width: 3),
-                            color: isDark ? Colors.grey[900] : Colors.grey[200],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: _image != null
-                                ? Image.file(_image!, fit: BoxFit.cover)
-                                : const Icon(Icons.person, size: 80, color: Colors.grey),
-                          ),
-                        ),
-                        PositionedDirectional(
-                          bottom: 0,
-                          end: 0,
-                          child: GestureDetector(
-                            onTap: () => _showImageSourceActionSheet(context, isAr),
-                            child: CircleAvatar(
-                              backgroundColor: const Color(0xFF1565C0),
-                              radius: 18,
-                              child: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-
-                    _buildTextField(
-                      controller: _nameController,
-                      label: isAr ? 'الاسم الكامل' : 'Full Name',
-                      icon: Icons.person_outline,
-                      isDark: isDark,
-                      isAr: isAr,
-                    ),
-                    const SizedBox(height: 20),
-
-                    _buildTextField(
-                      controller: _emailController,
-                      label: isAr ? 'البريد الإلكتروني' : 'Email Address',
-                      icon: Icons.email_outlined,
-                      keyboardType: TextInputType.emailAddress,
-                      isDark: isDark,
-                      isAr: isAr,
-                    ),
-                    const SizedBox(height: 20),
-
-                    _buildTextField(
-                      controller: _phoneController,
-                      label: isAr ? 'رقم الهاتف' : 'Phone Number',
-                      icon: Icons.phone_outlined,
-                      keyboardType: TextInputType.phone,
-                      isDark: isDark,
-                      isAr: isAr,
-                    ),
-                    const SizedBox(height: 20),
-
-                    _buildTextField(
-                      controller: _passwordController,
-                      label: isAr ? 'كلمة المرور' : 'Password',
-                      icon: Icons.lock_outline,
-                      isPassword: true,
-                      obscureText: !_isPasswordVisible,
-                      isDark: isDark,
-                      isAr: isAr,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: const Color(0xFF1565C0), width: 3),
+                        color: isDark ? Colors.grey[900] : Colors.grey[200],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: _image != null
+                            ? Image.file(_image!, fit: BoxFit.cover)
+                            : const Icon(Icons.person, size: 80, color: Colors.grey),
                       ),
                     ),
-                    const SizedBox(height: 40),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: 55,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            // حفظ الصورة في الـ Notifier العام
-                            if (_image != null) {
-                              userProfileImageNotifier.value = _image!.path;
-                            }
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(isAr ? 'تم حفظ التعديلات بنجاح' : 'Changes saved successfully')),
-                            );
-                            Navigator.pop(context);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1565C0),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          elevation: 2,
-                        ),
-                        child: Text(
-                          isAr ? 'حفظ التعديلات' : 'Save Changes',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    PositionedDirectional(
+                      bottom: 0,
+                      end: 0,
+                      child: GestureDetector(
+                        onTap: () => _showImageSourceActionSheet(context),
+                        child: const CircleAvatar(
+                          backgroundColor: Color(0xFF1565C0),
+                          radius: 18,
+                          child: Icon(Icons.camera_alt, size: 18, color: Colors.white),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 30),
+
+                _buildTextField(
+                  controller: _nameController,
+                  label: 'Full Name',
+                  icon: Icons.person_outline,
+                  isDark: isDark,
+                ),
+                const SizedBox(height: 20),
+
+                _buildTextField(
+                  controller: _emailController,
+                  label: 'Email Address',
+                  icon: Icons.email_outlined,
+                  keyboardType: TextInputType.emailAddress,
+                  isDark: isDark,
+                ),
+                const SizedBox(height: 20),
+
+                _buildTextField(
+                  controller: _phoneController,
+                  label: 'Phone Number',
+                  icon: Icons.phone_outlined,
+                  keyboardType: TextInputType.phone,
+                  isDark: isDark,
+                ),
+                const SizedBox(height: 20),
+
+                _buildTextField(
+                  controller: _passwordController,
+                  label: 'Password',
+                  icon: Icons.lock_outline,
+                  isPassword: true,
+                  obscureText: !_isPasswordVisible,
+                  isDark: isDark,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 40),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Save image to public notifier
+                        if (_image != null) {
+                          userProfileImageNotifier.value = _image!.path;
+                        }
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Changes saved successfully')),
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1565C0),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      elevation: 2,
+                    ),
+                    child: const Text(
+                      'Save Changes',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -252,7 +241,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     TextInputType keyboardType = TextInputType.text,
     Widget? suffixIcon,
     required bool isDark,
-    required bool isAr,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,7 +259,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
-          textAlign: isAr ? TextAlign.right : TextAlign.left,
+          textAlign: TextAlign.left,
           style: TextStyle(color: isDark ? Colors.white : Colors.black87),
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: const Color(0xFF1565C0)),
@@ -293,7 +281,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return isAr ? 'هذا الحقل مطلوب' : 'This field is required';
+              return 'This field is required';
             }
             return null;
           },
