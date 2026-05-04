@@ -59,30 +59,23 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    return ValueListenableBuilder<Locale>(
-      valueListenable: localeNotifier,
-      builder: (context, locale, _) {
-        final isAr = locale.languageCode == 'ar';
-        
-        return Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          body: IndexedStack(
-            index: _selectedIndex,
-            children: [
-              _buildHomeContent(isDark, isAr),
-              _buildPlaceholder(isAr ? 'بوت الدردشة' : 'ChatBot', Icons.smart_toy_outlined, isDark, isAr),
-              _buildHomeContent(isDark, isAr), // This was supposed to be the "Add Car" trigger or placeholder
-              const ServicesListScreen(),
-              const ProfileScreen(),
-            ],
-          ),
-          bottomNavigationBar: _buildBottomNavBar(isDark, isAr),
-        );
-      },
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          _buildHomeContent(isDark),
+          _buildPlaceholder('ChatBot', Icons.smart_toy_outlined, isDark),
+          _buildHomeContent(isDark), // Placeholder for Add Car
+          const ServicesListScreen(),
+          const ProfileScreen(),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomNavBar(isDark),
     );
   }
 
-  Widget _buildHomeContent(bool isDark, bool isAr) {
+  Widget _buildHomeContent(bool isDark) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -91,25 +84,25 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              _buildTopBar(isDark, isAr),
+              _buildTopBar(isDark),
               const SizedBox(height: 20),
-              _buildSearchBar(isDark, isAr),
+              _buildSearchBar(isDark),
               const SizedBox(height: 25),
-              _buildBannerCarousel(isAr),
+              _buildBannerCarousel(),
               const SizedBox(height: 25),
-              _buildTopBrandsSection(isDark, isAr),
+              _buildTopBrandsSection(isDark),
               const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildCategoryItem(isAr ? 'سيدان' : 'Sedans', 'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
-                  _buildCategoryItem(isAr ? 'دفع رباعي' : 'SUVs', 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
-                  _buildCategoryItem(isAr ? 'هاتشباك' : 'Hatchback', 'https://images.unsplash.com/photo-1590362891175-3794ef169f2a?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
-                  _buildCategoryItem(isAr ? 'رياضية' : 'Sports', 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
+                  _buildCategoryItem('Sedans', 'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
+                  _buildCategoryItem('SUVs', 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
+                  _buildCategoryItem('Hatchback', 'https://images.unsplash.com/photo-1590362891175-3794ef169f2a?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
+                  _buildCategoryItem('Sports', 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=200', isDark ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : const Color(0xFFE3F2FD), isDark),
                 ],
               ),
               const SizedBox(height: 25),
-              _buildSectionHeader(isAr ? 'سيارات مميزة' : 'Featured Cars', Icons.stars, Colors.orangeAccent, isDark, isAr),
+              _buildSectionHeader('Featured Cars', Icons.stars, Colors.orangeAccent, isDark),
               const SizedBox(height: 15),
               SizedBox(
                 height: 280,
@@ -119,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     final car = featuredCars[index];
                     return Padding(
-                      padding: EdgeInsetsDirectional.only(end: 15),
+                      padding: const EdgeInsets.only(right: 15),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -130,9 +123,9 @@ class _HomePageState extends State<HomePage> {
                           );
                         },
                         child: _buildCarCard(
-                          isAr ? car.titleAr : car.titleEn,
-                          isAr ? car.detailsAr : car.detailsEn,
-                          isAr ? car.priceAr : car.priceEn,
+                          car.titleEn,
+                          car.detailsEn,
+                          car.priceEn,
                           car.imagePath,
                           car.brandLogo,
                           isDark,
@@ -143,13 +136,13 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 25),
-              _buildSectionHeader(isAr ? 'المعارض' : 'Showrooms', Icons.business, Colors.blueGrey, isDark, isAr),
+              _buildSectionHeader('Showrooms', Icons.business, Colors.blueGrey, isDark),
               const SizedBox(height: 15),
               Row(
                 children: [
-                  _buildShowroomPlaceholder(isDark, isAr),
+                  _buildShowroomPlaceholder(isDark),
                   const SizedBox(width: 15),
-                  _buildShowroomPlaceholder(isDark, isAr),
+                  _buildShowroomPlaceholder(isDark),
                 ],
               ),
               const SizedBox(height: 100),
@@ -160,7 +153,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBottomNavBar(bool isDark, bool isAr) {
+  Widget _buildBottomNavBar(bool isDark) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
       child: Container(
@@ -179,19 +172,18 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildNavItem(Icons.home_outlined, isAr ? 'الرئيسية' : 'Home', 0),
-            _buildNavItem(Icons.smart_toy_outlined, isAr ? 'بوت' : 'ChatBot', 1),
-            // الزر الأوسط البارز (أضف سيارة / إعلان)
-            _buildCenterNavItem(isAr),
-            _buildNavItem(Icons.miscellaneous_services_outlined, isAr ? 'خدمات' : 'Services', 3),
-            _buildNavItem(Icons.person_outline, isAr ? 'حسابي' : 'Profile', 4),
+            _buildNavItem(Icons.home_outlined, 'Home', 0),
+            _buildNavItem(Icons.smart_toy_outlined, 'ChatBot', 1),
+            _buildCenterNavItem(),
+            _buildNavItem(Icons.miscellaneous_services_outlined, 'Services', 3),
+            _buildNavItem(Icons.person_outline, 'Profile', 4),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCenterNavItem(bool isAr) {
+  Widget _buildCenterNavItem() {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -211,9 +203,9 @@ class _HomePageState extends State<HomePage> {
             child: Icon(Icons.add, color: Theme.of(context).primaryColor, size: 28),
           ),
           const SizedBox(height: 4),
-          Text(
-            isAr ? 'أضف سيارة' : 'Add Car',
-            style: const TextStyle(
+          const Text(
+            'Add Car',
+            style: TextStyle(
               color: Colors.white,
               fontSize: 10,
               fontWeight: FontWeight.bold,
@@ -254,100 +246,94 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTopBar(bool isDark, bool isAr) {
-    return Directionality(
-      textDirection: TextDirection.ltr, // لضمان أن الصورة دائماً على اليسار والقلب على اليمين
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // صورة البروفايل في أقصى اليسار
-          ValueListenableBuilder<String?>(
-            valueListenable: userProfileImageNotifier,
-            builder: (context, imagePath, _) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _selectedIndex = 4; // ينتقل لتبويب الحساب
-                  });
-                },
-                child: Container(
-                  width: 45,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Theme.of(context).primaryColor, width: 1.5),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(22.5),
-                    child: imagePath != null
-                        ? Image.file(File(imagePath), fit: BoxFit.cover)
-                        : Container(
-                            color: isDark ? Colors.white10 : Colors.grey.shade200,
-                            child: Icon(Icons.person, color: isDark ? Colors.white54 : Colors.grey, size: 25),
-                          ),
-                  ),
+  Widget _buildTopBar(bool isDark) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ValueListenableBuilder<String?>(
+          valueListenable: userProfileImageNotifier,
+          builder: (context, imagePath, _) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedIndex = 4;
+                });
+              },
+              child: Container(
+                width: 45,
+                height: 45,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Theme.of(context).primaryColor, width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-              );
-            },
-          ),
-          
-          // أيقونات الإشعارات والمفضلة في اليمين
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const FavoritesScreen()),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05), blurRadius: 5),
-                    ],
-                  ),
-                  child: const Icon(Icons.favorite, color: Colors.red, size: 22),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(22.5),
+                  child: imagePath != null
+                      ? Image.file(File(imagePath), fit: BoxFit.cover)
+                      : Container(
+                          color: isDark ? Colors.white10 : Colors.grey.shade200,
+                          child: Icon(Icons.person, color: isDark ? Colors.white54 : Colors.grey, size: 25),
+                        ),
                 ),
               ),
-              const SizedBox(width: 12),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NotificationsScreen()),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05), blurRadius: 5),
-                    ],
-                  ),
-                  child: Icon(Icons.notifications_outlined, color: isDark ? Colors.white70 : Colors.black87),
+            );
+          },
+        ),
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FavoritesScreen()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05), blurRadius: 5),
+                  ],
                 ),
+                child: const Icon(Icons.favorite, color: Colors.red, size: 22),
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+            const SizedBox(width: 12),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NotificationsScreen()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05), blurRadius: 5),
+                  ],
+                ),
+                child: Icon(Icons.notifications_outlined, color: isDark ? Colors.white70 : Colors.black87),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
-  Widget _buildSearchBar(bool isDark, bool isAr) {
+  Widget _buildSearchBar(bool isDark) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       decoration: BoxDecoration(
@@ -358,21 +344,19 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       child: TextField(
-        textAlign: isAr ? TextAlign.right : TextAlign.left,
         style: TextStyle(color: isDark ? Colors.white : Colors.black87),
-        decoration: InputDecoration(
-          icon: isAr ? null : const Icon(Icons.search, color: Colors.grey),
-          suffixIcon: isAr ? const Icon(Icons.search, color: Colors.grey) : null,
-          hintText: isAr ? 'ابحث عن الماركات، الموديلات...' : 'Search for brands, models...',
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+        decoration: const InputDecoration(
+          icon: Icon(Icons.search, color: Colors.grey),
+          hintText: 'Search for brands, models...',
+          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
           border: InputBorder.none,
         ),
       ),
     );
   }
 
-  Widget _buildBannerCarousel(bool isAr) {
-    final banners = isAr ? bannersAr : bannersEn;
+  Widget _buildBannerCarousel() {
+    final banners = bannersEn;
 
     return Column(
       children: [
@@ -397,15 +381,15 @@ class _HomePageState extends State<HomePage> {
                         ? AssetImage(banners[index]['image']!) as ImageProvider
                         : NetworkImage(banners[index]['image']!),
                     fit: BoxFit.cover,
-                    alignment: isAr ? Alignment.centerLeft : Alignment.centerRight,
+                    alignment: Alignment.centerRight,
                   ),
                 ),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     gradient: LinearGradient(
-                      begin: isAr ? Alignment.centerRight : Alignment.centerLeft,
-                      end: isAr ? Alignment.centerLeft : Alignment.centerRight,
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
                       stops: const [0.0, 0.5],
                       colors: [
                         Colors.black.withValues(alpha: 0.85),
@@ -480,7 +464,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTopBrandsSection(bool isDark, bool isAr) {
+  Widget _buildTopBrandsSection(bool isDark) {
     final brands = [
       {'name': 'BMW', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png'},
       {'name': 'Mercedes', 'logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo_2010.svg/1024px-Mercedes-Logo_2010.svg.png'},
@@ -492,7 +476,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionHeader(isAr ? 'أفضل الماركات' : 'Top Brands', Icons.local_fire_department, Colors.redAccent, isDark, isAr),
+        _buildSectionHeader('Top Brands', Icons.local_fire_department, Colors.redAccent, isDark),
         const SizedBox(height: 15),
         SizedBox(
           height: 80,
@@ -534,7 +518,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSectionHeader(String title, IconData icon, Color iconColor, bool isDark, bool isAr) {
+  Widget _buildSectionHeader(String title, IconData icon, Color iconColor, bool isDark) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -555,7 +539,7 @@ class _HomePageState extends State<HomePage> {
         TextButton(
           onPressed: () {},
           child: Text(
-            isAr ? 'عرض الكل' : 'See All',
+            'See All',
             style: TextStyle(color: Theme.of(context).primaryColor),
           ),
         ),
@@ -615,9 +599,9 @@ class _HomePageState extends State<HomePage> {
                     : Image.network(imageUrl, fit: BoxFit.cover),
                 ),
               ),
-              PositionedDirectional(
+              Positioned(
                 top: 12,
-                end: 12,
+                right: 12,
                 child: Column(
                   children: [
                     Container(
@@ -625,7 +609,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.9),
                         shape: BoxShape.circle,
-                        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
+                        boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 5)],
                       ),
                       child: brandLogoUrl.startsWith('http')
                         ? Image.network(brandLogoUrl, height: 18, width: 18)
@@ -634,7 +618,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.black45,
                         shape: BoxShape.circle,
                       ),
@@ -670,7 +654,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildShowroomPlaceholder(bool isDark, bool isAr) {
+  Widget _buildShowroomPlaceholder(bool isDark) {
     return Expanded(
       child: Container(
         height: 100,
@@ -679,14 +663,14 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1)),
         ),
-        child: Center(
+        child: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.store, color: Colors.grey),
+              Icon(Icons.store, color: Colors.grey),
               Text(
-                isAr ? 'قريباً' : 'Coming Soon',
-                style: const TextStyle(color: Colors.grey, fontSize: 12),
+                'Coming Soon',
+                style: TextStyle(color: Colors.grey, fontSize: 12),
               ),
             ],
           ),
@@ -695,7 +679,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildPlaceholder(String title, IconData icon, bool isDark, bool isAr) {
+  Widget _buildPlaceholder(String title, IconData icon, bool isDark) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -707,7 +691,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 16),
           Text(
-            isAr ? 'قريباً' : 'Coming Soon',
+            'Coming Soon',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -715,8 +699,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            isAr ? 'هذه الميزة ستكون متوفرة قريباً' : 'This feature will be available soon',
+          const Text(
+            'This feature will be available soon',
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey,
@@ -727,4 +711,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

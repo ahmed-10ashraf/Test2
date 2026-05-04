@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'maintenance_register_page.dart';
 import 'register_page.dart';
+import 'towing_register_page.dart';
+import 'parts_register_page.dart';
 
 class BusinessSelectionPage extends StatefulWidget {
   const BusinessSelectionPage({super.key});
@@ -134,10 +137,20 @@ class _BusinessSelectionPageState extends State<BusinessSelectionPage> {
                             context,
                             MaterialPageRoute(builder: (context) => const RegisterPage()),
                           );
-                        } else {
-                          // Handle other activities
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Activity form coming soon')),
+                        } else if (_selectedActivity == 'maintenance') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const MaintenanceRegisterPage()),
+                          );
+                        } else if (_selectedActivity == 'towing') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const TowingRegisterPage()),
+                          );
+                        } else if (_selectedActivity == 'parts') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PartsRegisterPage()),
                           );
                         }
                       },
